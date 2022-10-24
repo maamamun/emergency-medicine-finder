@@ -1,0 +1,15 @@
+footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+
+body{
+  margin: 0%;
+  background-color: rgb(240, 235, 228);
+}
+.btn.btn-warning{
+  padding: .4em 2em;
+}

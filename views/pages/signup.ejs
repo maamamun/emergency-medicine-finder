@@ -1,0 +1,104 @@
+<%- include ('../template/header') -%>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8 offset-2 mt-4 card p-4">
+        <h4 class="mt-2">Signup</h4>
+
+        <div class="mt-3 login-and-res">
+          <form action="/add-user" method="post">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-user"></i>First Name:</label>
+                  <input type="text" name="firstName" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-mobile"></i> Last Name:</label>
+                  <input type="text" name="lastName" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-mobile"></i> Phone:</label>
+                  <input type="tel" class="form-control" name="phone" required />
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-mobile"></i> Email:</label>
+                  <input type="email" class="form-control" name="email" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-mobile"></i> House:</label>
+                  <input type="text" name="house" class="form-control" required />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-road"></i> Street Address:</label>
+                  <input type="text" class="form-control" name="road" required />
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Zila:</label>
+                  <select class="form-select districts" name="zila" id="dis" aria-label="Default select example">
+                    <option selected>Select Zila:</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Upazila:</label>
+                  <select class="form-select" name="upazila" aria-label="Default select example">
+                    <option selected>Select Upzila:</option>
+                    <option value="dhaka">Mirpur</option>
+                    <option value="ctg">Khilgaw</option>
+                  </select>
+              </div>
+              <div class="mb-3" hidden>
+                  <label for="" class="form-label"> Role:</label>
+                  <select class="form-select" id="role" name="role" aria-label="Default select example">
+                    <option selected required>Select Role :</option>
+                    <option value="user">User</option>
+                    <option value="shopkeeper">Shopkeeper</option>
+                    <option value="delivery">Delivery Man</option>
+                </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="" class="form-label"><i class="las la-mobile"></i> Password:</label>
+                  <input type="password" class="form-control" name="pass" required />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-warning">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/JS/login.js"></script>
+
+  <script>
+    const districtsList = document.querySelector('.districts');
+    const endPoint = "https://bdapis.herokuapp.com/api/v1.0/districts/";
+    
+    async function bdApi(url) {
+      const res = await fetch(url)
+      return res.json();
+    }
+    
+    bdApi(endPoint)
+      .then(districts => {
+        const allDistricts = districts.data;
+    
+        allDistricts.forEach(district => {
+          const li = document.createElement("option");
+          li.textContent = district.district;
+          const att = document.createAttribute("value");
+          att.value = district.district;
+          districtsList.append(li);
+        })
+      })
+      .catch(error => {
+        console.error('Error::', error);
+      });
+    </script>
+  <%- include('../template/footer.ejs') -%>
