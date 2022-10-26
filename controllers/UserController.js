@@ -90,7 +90,7 @@ const UserController = {
 
   getlogout: (req, res) => {
     req.session.destroy();
-    res.redirect('/login')
+    res.redirect('/home')
   },
 
 }
