@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const axios = require('axios');
+const HTMLParser = require('node-html-parser')
 const UserController = require('../controllers/UserController');
 
 router.get('/', UserController.getHome)
@@ -9,7 +11,23 @@ router.get('/signup', UserController.getSignupForm)
 router.post('/add-user', UserController.signupData)
 router.get('/login', UserController.getloginForm)
 
-// router.get('/home', UserController.userData)
+// for districts
+router.get('/get-all-district-list', async (req, res, next) => {
+    const url = 'https://raw.githubusercontent.com/fahimreza-dev/bangladesh-geojson/master/bd-districts.json'
+    const response = await axios.get(url)
+    const data = response.data
+    const root = HTMLParser.parse(data)
+    const districts = root.querySelectorAll('#dis option')
+    const districtsList = []
+    districts.forEach(district => {
+        const optValue = trimStr(district.rawAttrs.split('value=')[1].split('"')[1])
+        if (!optValue) return
+        districtsList.unshift(optValue)
+        console.log(districtsList);
+    })  
+    res.json(districtsList)
+  })
+
 
 router.post('/login', UserController.loginData)
 
