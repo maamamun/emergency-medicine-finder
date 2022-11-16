@@ -20,11 +20,11 @@ const UserController = {
   signupData: async (req, res) => {
     try {
       const {
-        firstName, lastName, email, phone, house, road, upazila, zila, role, pass,
+        firstName, lastName, email, phone, house, road, division, upazila, zila, role, pass,
       } = req.body;
       const hash = await bcrypt.hash(pass, 10);
       // console.log(req.body.email)
-      const signup = await UserModels.signup(firstName, lastName, email, phone, house, road, upazila, zila, role, hash);
+      const signup = await UserModels.signup(firstName, lastName, email, phone, house, road, division, upazila, zila, role, hash);
 
       if (signup.errno) {
         res.send('Something went wrong')
