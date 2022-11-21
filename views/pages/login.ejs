@@ -76,37 +76,3 @@
         </div>
     </div>
     <%- include ('../template/footer') %>
-
-
-
-    const divisionsList = document.querySelector('.divisions');
-    const endPoint = "https://bdapis.herokuapp.com/api/v1.1/divisions";
-    
-    async function bdApi(url) {
-      const res = await fetch(url)
-      return res.json();
-    }
-    
-    bdApi(endPoint)
-      .then(divisions => {
-        const allDivisions = divisions.data;
-    
-        allDivisions.forEach(division => {
-          const li = document.createElement("option");
-          li.textContent = division.division;
-          const att = document.createAttribute("value");
-          att.value = division.division;
-          divisionsList.append(li);
-        })
-      })
-      .catch(error => {
-        console.error('Error::', error);
-      });
-
-    const districtList = document.querySelector('.districts');
-    const endPoint2 = "https://bdapis.herokuapp.com/api/v1.1/districts/";
-    
-    async function bdApi(url) {
-  const res = await fetch(url)
-  return res.json();
-}
