@@ -32,6 +32,13 @@ router.post('/login', UserController.loginData)
 router.get('/logout', UserController.getlogout)
 
 router.get('/admin', UserController.getAdmin)
+router.get('/shopkeeper', UserController.getShopkeeper)
+router.get('/addmedicine', UserController.getAddMedicine)
+router.get('/updatemedicine', UserController.getUpdateMedicine)
+router.get('/medicine', UserController.getMedicine)
+
+
+
 
 
 

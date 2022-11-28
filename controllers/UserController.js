@@ -13,6 +13,18 @@ const UserController = {
   getAdmin: async (req, res) => {
     res.render('pages/admin')
   },
+  getShopkeeper: async (req, res) => {
+    res.render('pages/shopkeeper')
+  },
+  getAddMedicine: async (req, res) => {
+    res.render('pages/addmedicine')
+  },
+  getUpdateMedicine: async (req, res) => {
+    res.render('pages/updatemedicine')
+  },
+  getMedicine: async (req, res) => {
+    res.render('pages/medicines')
+  },
   getSignupForm: async (req, res) => {
     res.render('pages/signup')
   },
