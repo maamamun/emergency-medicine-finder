@@ -36,6 +36,9 @@ router.get('/shopkeeper', UserController.getShopkeeper)
 router.get('/addmedicine', UserController.getAddMedicine)
 router.get('/updatemedicine', UserController.getUpdateMedicine)
 router.get('/medicine', UserController.getMedicine)
+router.get('/updatemedicine', UserController.getUpdateMedicine)
+
+
 
 
 
