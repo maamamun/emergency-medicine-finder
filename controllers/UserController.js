@@ -1,7 +1,29 @@
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 const UserModels = require('../models/UserModels');
 
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'gazi.rahad871@gmail.com',
+    pass: 'azxxmidtjvuakxgk',
+  },
+});
+//
 
+async function sendMail(toMail, subject, textMessage, htmlMessage) {
+  // send mail with defined transport object
+  const results = await transporter.sendMail({
+    from: 'EMF ✉️ <gazi.rahad871@gmail.com>',
+    to: toMail,
+    subject,
+    text: textMessage,
+    html: htmlMessage,
+  })
+  return results
+}
 const UserController = {
 
   // home
@@ -41,8 +63,28 @@ const UserController = {
       if (signup.errno) {
         res.send('Something went wrong')
       } else {
+        const subject = 'EMF active account';
+        const textMessage = 'EMF account verify'
+        const link = `${process.env.BASE_UR}`
+        const activeBtn = `
+         <div>
+         <a style="cursor: pointer;" href="http://localhost:4000/verify-account/${signup.insertId}">
+        <button style="padding: 0px 20px;
+         border-radius: 8px;
+         background-color: #103047;
+         border : none;
+         font-size: 15px;
+         font-weight: 700;
+         line-height: 36px;
+         color: #FFFFFF;
+         margin-left: 8px;
+         text-align: center;
+         cursor: pointer;">
+         Active account</button></a>
+         </div>
+         `
+        sendMail(email, subject, textMessage, activeBtn)
         res.redirect('/login')
-        // res.send('Signup successfull')
       }
     } catch (e) {
       // console.log(e);
@@ -55,7 +97,6 @@ const UserController = {
   },
   loginData: async (req, res) => {
     try {
-
       const {
         email, role, pass,
       } = req.body;
@@ -74,18 +115,15 @@ const UserController = {
               res.redirect('/login');
               // res.render('pages/login', { title: 'Express', session: req.session, login: login })
               // console.log({login:login})
-            }
-            else {
+            } else {
               res.send('Incorrect Password');
             }
           }
-        }
-        else {
+        } else {
           res.send('Incorrect Email Address');
         }
         res.end();
-      }
-      else {
+      } else {
         res.send('Please enter your email, password and role, If you have no account please sign up.')
         res.end();
       }
@@ -99,10 +137,17 @@ const UserController = {
     res.render('pages/home')
   },
 
-
   getlogout: (req, res) => {
     req.session.destroy();
     res.redirect('/login')
+  },
+  accountVerify: async (req, res) => {
+    const userId = req.params.id
+    console.log({ userId })
+    const isUpdate = await UserModels.updateStatus(userId)
+    if (isUpdate.affectedRows) {
+      res.redirect('/login')
+    }
   },
 
 }
