@@ -27,12 +27,16 @@ const UserModels = {
   },
 
   getUser: async (firstName, lastName, email, phone, house, road, division, upazila, zila, role, pass) => {
-    const sql = `SELECT * FROM users`;
+    const sql = 'SELECT * FROM users';
     const values = [firstName, lastName, email, phone, house, road, division, upazila, zila, role, pass]
     const [rows] = await dbConnect.promise().execute(sql);
     return rows;
   },
-
+  updateStatus: async (userId) => {
+    const sql = `UPDATE users SET status = 1 WHERE u_id  = ${userId}`
+    const [row] = await dbConnect.promise().execute(sql)
+    return row
+  },
 };
 
 module.exports = UserModels;
