@@ -4,9 +4,14 @@ const UserModels = {
 
   signup: async (firstName, lastName, email, phone, house, road, upazila, zila, role, pass) => {
     const sql = 'INSERT INTO `users`(`first_name`, `last_name`, `email`, `phone`, `house`, `road`, `upazila`, `zila`, `role`, `pass`) VALUES(?,?,?,?,?,?,?,?,?,?)';
-
     const values = [firstName, lastName, email, phone, house, road, upazila, zila, role, pass]
+    const [rows] = await dbConnect.promise().execute(sql, values);
+    return rows;
+  },
 
+  asignup: async (userid, pass) => {
+    const sql = 'INSERT INTO `admin`( `user_id`, `pass`) VALUES (?,?)';
+    const values = [userid, pass]
     const [rows] = await dbConnect.promise().execute(sql, values);
     return rows;
   },
@@ -33,6 +38,7 @@ const UserModels = {
     return rows;
   },
   updateStatus: async (userId) => {
+    // const sql = `UPDATE admin SET status = 1 WHERE id  = 1`
     const sql = `UPDATE users SET status = 1 WHERE u_id  = ${userId}`
     const [row] = await dbConnect.promise().execute(sql)
     return row

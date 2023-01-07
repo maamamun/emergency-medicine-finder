@@ -7,16 +7,19 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'gazi.rahad871@gmail.com',
-    pass: 'azxxmidtjvuakxgk',
+    // user: 'gazi.rahad871@gmail.com',
+    // pass: 'azxxmidtjvuakxgk',
+    user: 'mamun872381cpi@gmail.com',
+    pass: 'rftopxkjdkfjhfpc',
   },
 });
 //
 
 async function sendMail(toMail, subject, textMessage, htmlMessage) {
+  
   // send mail with defined transport object
   const results = await transporter.sendMail({
-    from: 'EMF ✉️ <gazi.rahad871@gmail.com>',
+    from: 'Emerjency Medicine Finder ✉️ <mamun872381cpi@gmail.com>',
     to: toMail,
     subject,
     text: textMessage,
@@ -24,6 +27,7 @@ async function sendMail(toMail, subject, textMessage, htmlMessage) {
   })
   return results
 }
+
 const UserController = {
 
   // home
@@ -47,8 +51,55 @@ const UserController = {
   getMedicine: async (req, res) => {
     res.render('pages/medicines')
   },
-  getSignupForm: async (req, res) => {
+  getSignupForm: async (req, res) => { 
     res.render('pages/signup')
+  },
+
+  getaSignupForm: async (req, res) => {
+    res.render('pages/asignup')
+  },
+
+
+  asignupData: async (req, res) => {
+    try {
+      const {
+        userid, pass,
+      } = req.body;
+      const hash = await bcrypt.hash(pass, 10);
+      // console.log(req.body.email)
+      const asignupd = await UserModels.asignup(userid, hash);
+
+      if (asignupd.errno) {
+        res.send('Something went wrong')
+      } else {
+         const toMail="a.a.mamun2098@gmail.com"
+        const subject = 'Emerjency Medicine Finder active account';
+        const textMessage = 'Emerjency Medicine Finder account verify'
+        console.log("dsfsdfsd",asignupd)
+        const activeBtn = `
+         <div>
+         <a style="cursor: pointer;" href="http://localhost:4000/verify-account/${asignupd.insertId}">
+        <button style="padding: 0px 20px;
+         border-radius: 8px;
+         background-color: #103047;
+         border : none;
+         font-size: 15px;
+         font-weight: 700;
+         line-height: 36px;activeBtn
+         color: #FFFFFF;
+         margin-left: 8px;
+         text-align: center;
+         cursor: pointer;">
+         Active account</button></a>
+         </div>
+         `
+        sendMail(toMail, subject, textMessage, activeBtn)
+        res.redirect('/admin')
+      }
+    } catch (e) {
+      console.log(e)
+      res.send('Wrong')
+    }
   },
 
   signupData: async (req, res) => {
@@ -58,24 +109,26 @@ const UserController = {
       } = req.body;
       const hash = await bcrypt.hash(pass, 10);
       // console.log(req.body.email)
-      const signup = await UserModels.signup(firstName, lastName, email, phone, house, road, division, upazila, zila, role, hash);
+      const signupd = await UserModels.signup(firstName, lastName, email, phone, house, road, division, upazila, zila, role, hash);
 
-      if (signup.errno) {
+      if (signupd.errno) {
         res.send('Something went wrong')
       } else {
-        const subject = 'EMF active account';
-        const textMessage = 'EMF account verify'
+        // const toMail="dibabinte07@gmail.com"
+        const subject = 'Emerjency Medicine Finder active account';
+        const textMessage = 'Emerjency Medicine Finder account verify'
         const link = `${process.env.BASE_UR}`
+        console.log("dsfsdfsd",signupd)
         const activeBtn = `
          <div>
-         <a style="cursor: pointer;" href="http://localhost:4000/verify-account/${signup.insertId}">
+         <a style="cursor: pointer;" href="http://localhost:4000/verify-account/${signupd.insertId}">
         <button style="padding: 0px 20px;
          border-radius: 8px;
          background-color: #103047;
          border : none;
          font-size: 15px;
          font-weight: 700;
-         line-height: 36px;
+         line-height: 36px;activeBtn
          color: #FFFFFF;
          margin-left: 8px;
          text-align: center;
@@ -83,6 +136,7 @@ const UserController = {
          Active account</button></a>
          </div>
          `
+        // sendMail(toMail, subject, textMessage, activeBtn)
         sendMail(email, subject, textMessage, activeBtn)
         res.redirect('/login')
       }

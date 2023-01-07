@@ -3,9 +3,13 @@ const axios = require('axios');
 const HTMLParser = require('node-html-parser')
 const UserController = require('../controllers/UserController');
 
+router.get('/asignup', UserController.getaSignupForm)
+router.post('/add-admin', UserController.asignupData)
+
 router.get('/', UserController.getHome)
 router.get('/signup', UserController.getSignupForm)
 router.post('/add-user', UserController.signupData)
+
 router.get('/login', UserController.getloginForm)
 
 // for districts
