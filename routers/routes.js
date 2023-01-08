@@ -3,14 +3,22 @@ const axios = require('axios');
 const HTMLParser = require('node-html-parser')
 const UserController = require('../controllers/UserController');
 
-router.get('/asignup', UserController.getaSignupForm)
 router.post('/add-admin', UserController.asignupData)
-
-router.get('/', UserController.getHome)
-router.get('/signup', UserController.getSignupForm)
+router.post('/alogin', UserController.adminLoginData)
+router.post('/login', UserController.loginData)
 router.post('/add-user', UserController.signupData)
+router.post('/add-amedicine', UserController.addMedicineData)
+
+router.get('/addamedicine', UserController.amedicineData)
+
+router.get('/signup', UserController.getSignupForm)
+router.get('/asignup', UserController.getaSignupForm)
 
 router.get('/login', UserController.getloginForm)
+
+// router.get('/alogin', UserController.getAdminLoginForm)
+router.get('/', UserController.getHome)
+
 
 // for districts
 router.get('/get-all-district-list', async (req, res, next) => {
@@ -29,15 +37,18 @@ router.get('/get-all-district-list', async (req, res, next) => {
   res.json(districtsList)
 })
 
-router.post('/login', UserController.loginData)
 
 router.get('/logout', UserController.getlogout)
+router.get('/alogout', UserController.getAdminlogout)
+
 
 router.get('/admin', UserController.getAdmin)
 router.get('/shopkeeper', UserController.getShopkeeper)
 router.get('/addmedicine', UserController.getAddMedicine)
 router.get('/updatemedicine', UserController.getUpdateMedicine)
 router.get('/medicine', UserController.getMedicine)
+router.get('/medicinedata', UserController.getMedicineData)
+
 router.get('/updatemedicine', UserController.getUpdateMedicine)
 router.get('/verify-account/:id', UserController.accountVerify)
 

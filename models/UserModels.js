@@ -9,7 +9,7 @@ const UserModels = {
     return rows;
   },
 
-  asignup: async (userid, pass) => {
+  adminSignup: async (userid, pass) => {
     const sql = 'INSERT INTO `admin`( `user_id`, `pass`) VALUES (?,?)';
     const values = [userid, pass]
     const [rows] = await dbConnect.promise().execute(sql, values);
@@ -22,23 +22,39 @@ const UserModels = {
     return rows;
   },
 
-  medicine: async (firstName, lastName, email, phone, house, road, upazila, zila, role, pass) => {
-    const sql = 'INSERT INTO `users`(`first_name`, `last_name`, `email`, `phone`, `house`, `road`, `upazila`, `zila`, `role`, `pass`) VALUES(?,?,?,?,?,?,?,?,?,?)';
+  adminLogin: async (userid) => {
+    const sql = `SELECT * FROM admin WHERE user_id="${userid}" `;
+    const [rows] = await dbConnect.promise().execute(sql);
+    return rows;
+  },
 
-    const values = [firstName, lastName, email, phone, house, road, upazila, zila, role, pass]
-
+  addMedicineByAdmin: async (brandName,generics,dosgaeForm,strengthMg,company) => {
+    const sql = 'INSERT INTO `orgmedicin`(`brand_name`, `generics`, `dosgae_form`, `strength_mg`, `company`) VALUES (?,?,?,?,?)';
+    const values = [brandName,generics,dosgaeForm,strengthMg,company]
     const [rows] = await dbConnect.promise().execute(sql, values);
     return rows;
   },
 
-  getUser: async (firstName, lastName, email, phone, house, road, division, upazila, zila, role, pass) => {
-    const sql = 'SELECT * FROM users';
-    const values = [firstName, lastName, email, phone, house, road, division, upazila, zila, role, pass]
+  getMedicineData: async () => {
+    const sql = 'SELECT * FROM orgmedicin';
     const [rows] = await dbConnect.promise().execute(sql);
     return rows;
   },
+
+  getUser: async () => {
+    const sql = 'SELECT * FROM users';
+    const [rows] = await dbConnect.promise().execute(sql);
+    return rows;
+  },
+
+  getAdmin: async (userid) => {
+    const sql = `SELECT * FROM admin WHERE user_id="${userid}"`;
+    const [rows] = await dbConnect.promise().execute(sql);
+    return rows;
+  },
+
   updateStatus: async (userId) => {
-    // const sql = `UPDATE admin SET status = 1 WHERE id  = 1`
+    // const sql = `UPDATE admin SET status = 1 WHERE id  = ${userId}`
     const sql = `UPDATE users SET status = 1 WHERE u_id  = ${userId}`
     const [row] = await dbConnect.promise().execute(sql)
     return row

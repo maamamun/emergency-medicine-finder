@@ -5,6 +5,8 @@ const session = require('express-session')
 const router = require('./routers/routes');
 
 
+
+
 require('dotenv').config();
 
 const app = express();
@@ -15,6 +17,7 @@ app.use(session({
   resave:true,
   saveUninitialized: true
 }))
+
 //
 
 app.use(express.static(`${__dirname}/public`));
@@ -24,6 +27,13 @@ app.use(express.urlencoded({ extended: true }));
 
 //
 app.use(router);
+
+if (typeof localStorage === "undefined" || localStorage === null) {
+  let LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
+
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server Running http://localhost:${process.env.PORT}`);
