@@ -1,56 +1,106 @@
 const router = require('express').Router();
-const axios = require('axios');
-const HTMLParser = require('node-html-parser')
+
 const UserController = require('../controllers/UserController');
 
-router.post('/add-admin', UserController.asignupData)
-router.post('/alogin', UserController.adminLoginData)
-router.post('/login', UserController.loginData)
-router.post('/add-user', UserController.signupData)
-router.post('/add-amedicine', UserController.addMedicineData)
+const multer = require('multer');
 
-router.get('/addamedicine', UserController.amedicineData)
+const upload = multer({ dest: 'public/uploads/' });
 
-router.get('/signup', UserController.getSignupForm)
-router.get('/asignup', UserController.getaSignupForm)
 
-router.get('/login', UserController.getloginForm)
+/* ======== import files ========= */
+const {
+  requireAuth,
+  checkCurrentLogin,
+  redirectLoggedIn,
+} = require('../middleware/AuthMiddleware');
+const { singupValidator, loginValidator } = require('../middleware/validator/userValidator');
+const decorateHtmlResponse = require('../middleware/decorateHtmlResponse');
 
-// router.get('/alogin', UserController.getAdminLoginForm)
+
+
+
+
+
+
+
+
+/* ======= Get Routes ======= */
 router.get('/', UserController.getHome)
-
-
-// for districts
-router.get('/get-all-district-list', async (req, res, next) => {
-  const url = 'https://raw.githubusercontent.com/fahimreza-dev/bangladesh-geojson/master/bd-districts.json'
-  const response = await axios.get(url)
-  const { data } = response
-  const root = HTMLParser.parse(data)
-  const districts = root.querySelectorAll('#dis option')
-  const districtsList = []
-  districts.forEach((district) => {
-    const optValue = trimStr(district.rawAttrs.split('value=')[1].split('"')[1])
-    if (!optValue) return
-    districtsList.unshift(optValue)
-    console.log(districtsList);
-  })
-  res.json(districtsList)
-})
-
-
-router.get('/logout', UserController.getlogout)
-router.get('/alogout', UserController.getAdminlogout)
-
-
+router.get('/home', UserController.getHome)
+router.get('/about', UserController.getAbout)
+router.get('/contact', UserController.getContact)
+router.get('/offer', UserController.getOffer)
+router.get('/services', UserController.getServices)
 router.get('/admin', UserController.getAdmin)
-router.get('/shopkeeper', UserController.getShopkeeper)
-router.get('/addmedicine', UserController.getAddMedicine)
-router.get('/updatemedicine', UserController.getUpdateMedicine)
-router.get('/medicine', UserController.getMedicine)
-router.get('/medicinedata', UserController.getMedicineData)
+router.get('/booking', UserController.getBooking)
+router.get('/bookingservice', UserController.getBookingC)
+router.get('/booked', UserController.getBooked)
+router.get('/user', UserController.getUser)
+router.get('/worker', UserController.getWorker)
+router.get('/workers', UserController.getWorkerDesh)
+router.get('/service', UserController.getServiceData)
+router.get(
+  '/login',
+  decorateHtmlResponse('Home'), redirectLoggedIn,
 
-router.get('/updatemedicine', UserController.getUpdateMedicine)
+  UserController.newlogin,
+);
+
+router.get(
+  '/workerlogin', UserController.workerlogin,
+);
+
+
+router.get(
+  '/profile',
+  decorateHtmlResponse('Profile'),
+  UserController.profile,
+);
+router.get(
+  '/signup',
+  decorateHtmlResponse('SignUp'),
+  checkCurrentLogin,
+  UserController.registerC,
+);
+
+router.get(
+  '/workersignup',
+  decorateHtmlResponse('SignUp'),
+  UserController.workerRegisterC,
+);
+
+router.get('/logout', UserController.logout);
+router.get('/workerlogout', UserController.WorkerLogout);
+router.get('/adminlogout', UserController.adminLogout);
+
 router.get('/verify-account/:id', UserController.accountVerify)
+router.get('/verify-worker-account/:id', UserController.workerAccountVerify)
+router.get('/hold-worker-account/:id', UserController.workerAccountHold)
+router.get('/verify-booking/:id', UserController.bookingVerify)
+router.get('/hold-booking/:id', UserController.bookingHold)
 
-//
+/* ======= Post routes ======== */
+router.post('/alogin', UserController.adminLoginData)
+router.post('/book-service', UserController.bookData)
+router.post('/add-service', UserController.serviceData)
+router.post('/login', decorateHtmlResponse('Login'), UserController.loginC)
+router.post('/workerlogin',  UserController.workerloginC)
+router.post(
+  '/signup', upload.fields([{ name: 'propic' }]),
+  decorateHtmlResponse('SignUp'),
+  singupValidator,
+  UserController.insertRegisterC,
+);
+router.post(
+  '/workersignup', upload.fields([{ name: 'propic' },
+   { name: 'nid1' }, 
+   { name: 'nid2' }]),
+  UserController.insertWorkerRegisterC,
+);
+
+router.post(
+  '/bookingservice', upload.fields([{ name: 'paymentProof' }]),
+  UserController.insertBooking,
+);
+
 module.exports = router;

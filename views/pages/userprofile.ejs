@@ -1,0 +1,51 @@
+<%- include ('../template/header') %>
+  <%- include ('../template/nav') -%>
+    <!-- about section -->
+
+    <section class="about_section layout_padding">
+      <div class="container  ">
+        <div class="row">
+          <div class="col-md-6 ">
+            <div class="img-profile-box">
+              <img src="uploads/<%= userData[0].propic%>" alt="">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="detail-box">
+              <div class="heading_container">
+                <h2>
+                  <%= userData[0].first_name %> <span>
+                      <%= userData[0].last_name %>
+                    </span>
+                </h2>
+              </div>
+              <div class="profile_container">
+                <p>
+                  <span>email: </span>
+                  <%= userData[0].email %>
+                </p>
+                <p>
+                  <span>Address: </span>
+                  House: <%= userData[0].house %>, Road: <%= userData[0].road %>, Thana/Upazila: <%= userData[0].upazila
+                        %>,     Zila: <%= userData[0].zila %>.
+                </p>
+                <p>
+                  <span>phone: </span>
+                  <%= userData[0].phone %>
+                </p>
+              </div>
+              <a href="/booked">
+                Booked Service
+              </a>
+              <!-- <button>
+                Update Profile
+              </button> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end about section -->
+    <%- include("../template/footer"); -%>

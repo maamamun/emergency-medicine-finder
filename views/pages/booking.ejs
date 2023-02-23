@@ -1,0 +1,157 @@
+<%- include ('../template/aheader') %>
+    <section class="main">
+        <div class="sidebar">
+            <ul class="sidebar--items">
+                <li>
+                    <a href="/admin">
+                        <span class="icon icon-1"><i class="ri-layout-grid-line"></i></span>
+                        <span class="sidebar--item">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/service">
+                        <span class="icon icon-2"><i class="ri-git-repository-line"></i></span>
+                        <span class="sidebar--item">Service</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/booking" id="active--link">
+                        <span class="icon icon-2"><i class="ri-calendar-2-line"></i></span>
+                        <span class="sidebar--item">Booking Schedule</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/user">
+                        <span class="icon icon-4"><i class="ri-user-line"></i></span>
+                        <span class="sidebar--item">User</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/worker">
+                        <span class="icon icon-3"><i class="ri-user-2-line"></i></span>
+                        <span class="sidebar--item" style="white-space: nowrap;">Worker</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon icon-5"><i class="ri-line-chart-line"></i></span>
+                        <span class="sidebar--item">Booking</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon icon-6"><i class="ri-customer-service-line"></i></span>
+                        <span class="sidebar--item">Support</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="sidebar--bottom-items">
+                <li>
+                    <a href="#">
+                        <span class="icon icon-7"><i class="ri-settings-3-line"></i></span>
+                        <span class="sidebar--item">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/adminlogout">
+                        <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
+                        <span class="sidebar--item">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="main--content">
+            <div class="recent--worker">
+                <div class="title">
+                    <h2 class="section--title">Booking Schedule List</h2>
+                </div>
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+
+
+                            <tr>
+
+                                <th>Service Title</th>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Mobile Number</th>
+                                <th>Current Address</th>
+                                <th>Destination</th>
+                                <th>Service Date</th>
+                                <th>Paymemt Mathod</th>
+                                <th>Transaction Proof</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% allBooking.map(service=>{ %>
+                                <tr>
+
+                                    <td>
+                                        <%=service.ser_title%>
+                                    </td>
+                                    <th scope="row">
+                                        <%for(let i=0;i<allUser.length;i++){ %>
+                                            <%if(allUser[i].email==service.user_email){ %>
+                                                <%=allUser[i].first_name%>
+                                                    <%=allUser[i].last_name%>
+                                                        <% } %>
+                                                            <% } %>
+                                    </th>
+                                    <td>
+                                        <%=service.user_email%>
+                                    </td>
+                                    <td>
+                                        <%=service.user_phone%>
+                                    </td>
+                                    <td>
+                                        <%=service.current_address%>
+                                    </td>
+                                    <td>
+                                        <%=service.des_house%>, Road No: <%=service.des_road%>, Division:
+                                                <%=service.des_division%>,
+                                                    District:
+                                                    Chattogram, Thana/Upazila: <%=service.des_upazila%>
+                                    </td>
+                                    <td>
+                                        <%=service.fdate%>
+                                    </td>
+                                    <td>
+                                        <%=service.payment_mathod%>
+                                    </td>
+                                    <td>
+                                        <img src="uploads/<%=service.payment_proof%>" alt="Profile">
+                                    </td>
+                                    <%if(service.status==0){%>
+                                        <td class="pending">Pending</td>
+                                        <td><a class="btn btn-primary"
+                                                href="http://localhost:3000/verify-booking/<%=service.sb_id%>">Accept</a>
+                                        </td>
+                                        <% }else if(service.status==1){ %>
+                                            <td class="confirmed">Active</td>
+                                            <td><a class="btn btn-primary"
+                                                    href="http://localhost:3000/hold-booking/<%=service.sb_id%>">Blocked</a>
+                                            </td>
+                                            <% }else{ %>
+                                                <td class="pending">Hold</td>
+                                                <td><a class="btn btn-primary"
+                                                    href="http://localhost:3000/verify-booking/<%=service.sb_id%>">Accept</a>
+                                                </td>
+                                                
+                                            <% } %>
+
+                                </tr>
+
+
+                                <% }) %>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src=""></script>
