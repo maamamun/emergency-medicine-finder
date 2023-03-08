@@ -13,13 +13,13 @@
             <li>
                 <a href="/service">
                     <span class="icon icon-2"><i class="ri-git-repository-line"></i></span>
-                    <span class="sidebar--item">Service</span>
+                    <span class="sidebar--item">Medicine</span>
                 </a>
             </li>
             <li>
                 <a href="/booking">
                     <span class="icon icon-2"><i class="ri-calendar-2-line"></i></span>
-                    <span class="sidebar--item">Booking Schedule</span>
+                    <span class="sidebar--item">Orders</span>
                 </a>
             </li>
             <li>
@@ -29,11 +29,18 @@
                 </a>
             </li>
             <li>
-                <a href="/worker">
-                    <span class="icon icon-3"><i class="ri-user-2-line"></i></span>
-                    <span class="sidebar--item" style="white-space: nowrap;">Worker</span>
+                <a href="/shopkeeper">
+                    <span class="icon icon-7"><i class="ri-user-2-line"></i></span>
+                    <span class="sidebar--item" style="white-space: nowrap;">Shopkeeper</span>
                 </a>
             </li>
+            <li>
+                <a href="/worker">
+                    <span class="icon icon-3"><i class="ri-user-2-line"></i></span>
+                    <span class="sidebar--item" style="white-space: nowrap;">Delivery Man</span>
+                </a>
+            </li>
+
             <li>
                 <a href="#">
                     <span class="icon icon-5"><i class="ri-line-chart-line"></i></span>
@@ -48,12 +55,7 @@
             </li>
         </ul>
         <ul class="sidebar--bottom-items">
-            <li>
-                <a href="#">
-                    <span class="icon icon-7"><i class="ri-settings-3-line"></i></span>
-                    <span class="sidebar--item">Settings</span>
-                </a>
-            </li>
+            
             <li>
                 <a href="/adminlogout">
                     <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
@@ -75,6 +77,15 @@
                 </select>
             </div>
             <div class="cards">
+                <div class="card card-4">
+                    <div class="card--data">
+                        <div class="card--content">
+                            <h5 class="card--title">Total Shopkeeper</h5>
+                            <h1><%=allWorker.length%></h1>
+                        </div>
+                        <i class="ri-user-2-line card--icon--lg"></i>
+                    </div>                    
+                </div>
                 <div class="card card-1">
                     <div class="card--data">
                         <div class="card--content">
@@ -111,6 +122,59 @@
                         <i class="ri-reserved-line card--icon--lg"></i>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="recent--worker">
+            <div class="title">
+                <h2 class="section--title">Recent Shopkeeper</h2>
+            </div>
+            <div class="table">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% allUser.map(user=>{ %>
+
+                        <tr>
+                            <td>
+                                <%=user.first_name%> <%=user.last_name%>
+                            </td>
+                            <td>
+                                <%=user.email%>
+                            </td>
+                            <td>
+                                <%=user.phone%>
+                            </td>
+                            <td>
+                                <%=user.house%>, Road No: <%=user.road%>, Division: <%=user.division%>,
+                                            District:
+                                            Chattogram, Thana/Upazila: <%=user.upazila%>
+                            </td>
+                      
+                            <%if(user.status==0){%>
+                                <td class="pending">Pending</td>
+                                <td>
+                                <% }else if(user.status==1){ %>
+                                    <td class="confirmed">Active</td>
+                                   
+                                    <% }else{ %>
+                                        <td class="pending">Hold</td>
+                                       
+                                        <% } %>
+                       
+                        
+                        </tr> 
+                        <% }) %>                                                  
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -169,7 +233,7 @@
         
         <div class="recent--worker">
             <div class="title">
-                <h2 class="section--title">Recent Worker</h2>
+                <h2 class="section--title">Recent Delivery Man</h2>
             </div>
             <div class="table">
                 <table class="table table-bordered">
