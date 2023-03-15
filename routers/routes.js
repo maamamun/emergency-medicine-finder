@@ -16,14 +16,6 @@ const {
 const { singupValidator, loginValidator } = require('../middleware/validator/userValidator');
 const decorateHtmlResponse = require('../middleware/decorateHtmlResponse');
 
-
-
-
-
-
-
-
-
 /* ======= Get Routes ======= */
 router.get('/', UserController.getHome)
 router.get('/home', UserController.getHome)
@@ -82,7 +74,8 @@ router.get('/hold-booking/:id', UserController.bookingHold)
 /* ======= Post routes ======== */
 router.post('/alogin', UserController.adminLoginData)
 router.post('/book-service', UserController.bookData)
-router.post('/add-service', UserController.serviceData)
+router.post('/add-medi', UserController.mediData)
+router.post('/add-medicine', UserController.medicineData)
 router.post('/login', decorateHtmlResponse('Login'), UserController.loginC)
 router.post('/workerlogin',  UserController.workerloginC)
 router.post(
@@ -102,5 +95,14 @@ router.post(
   '/bookingservice', upload.fields([{ name: 'paymentProof' }]),
   UserController.insertBooking,
 );
+
+ router.get(
+  '/medicine',
+  UserController.getMedicineData
+ )
+
+ router.get(
+  '/searchmedicine',UserController.getSearchMediData
+ )
 
 module.exports = router;

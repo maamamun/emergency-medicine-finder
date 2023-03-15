@@ -2,32 +2,34 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/eos-icons/dist/css/eos-icons.css" rel="stylesheet" >
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <link rel="stylesheet" href="/css/astyle.css" />
-  <title>Shopkeeper</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/eos-icons/dist/css/eos-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/astyle.css" />
+    <title>Shopkeeper</title>
 </head>
+
 <body>
-    
-<section class="header">
+
+    <section class="header">
         <div class="logo">
             <i class="ri-menu-line icon icon-0 menu"></i>
             <h2>House<span>Shifting</span></h2>
         </div>
         <div class="search--notification--profile">
             <div class="search">
-                <input type="text" placeholder="Search Service..">
+                <input type="text" placeholder="Search..">
                 <button><i class="ri-search-2-line"></i></button>
             </div>
             <div class="notification--profile">
-          
+
                 <div class="picon chat">
-                    <%=workerData[0].first_name%> <%=workerData[0].last_name%>
+                    <%=workerData[0].first_name%>
+                        <%=workerData[0].last_name%>
                 </div>
                 <div class="picon profile">
                     <img src="/uploads/<%=workerData[0].propic%>" alt="">
@@ -35,7 +37,7 @@
             </div>
         </div>
     </section>
-    
+
     <section class="main">
         <div class="sidebar">
             <ul class="sidebar--items">
@@ -46,15 +48,10 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon icon-6"><i class="ri-customer-service-line"></i></span>
-                        <span class="sidebar--item">Support</span>
-                    </a>
-                </li>
+
             </ul>
             <ul class="sidebar--bottom-items">
-            
+
                 <li>
                     <a href="/workerlogout">
                         <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
@@ -64,59 +61,137 @@
             </ul>
         </div>
         <div class="main--content">
+            <div class="service">
+                <div class="title">
+                    <h2 class="section--title">Add Medicine</h2>
+                </div>
+                <div class="container">
+                    <form action="/add-medicine" method="post">
+                        <div class="mb-3 col-12">
+                            <div class="md-3 row">
+                                <input type="text" name="shopemail" value="<%=workerData[0].email%>" hidden>
+                                <div class="md-3 col">
+                                    <label for="mediid" class="col-form-label">Medicine Name</label>
+                                    <div>
+                                        <select class="form-select" id="mediid" aria-label="Default select example">
+                                            <option selected>Select Medicine:</option>
+                                            <% allService.map(service=>{ %>
+                                                <option value=<%=service.id%>><%= service.name%>(<%= service.type%>)<%=
+                                                                service.strength%>
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" name="mediname" id="mediname" hidden>
+                            <input type="text" name="meditype" id="meditype" hidden>
+                        </div>
+
+                        <div class="mb-3 col-12" hidden>
+                            <div class="md-3 row">
+                                <div class="md-3 col">
+                                    <label for="medistrength" class="col-form-label">Strength</label>
+                                    <div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="100mg"
+                                                name="medistrength" id="medistrength">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md-3 col">
+                                    <label for="quantity" class="col-form-label">Generic Name</label>
+                                    <div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Enter Generic Name"
+                                                id="medigeneric" name="medigeneric">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="mb-3 col-12" hidden>
+                            <label for="price" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Company Name" name="medicompany"
+                                id="medicompany">
+                        </div>
+
+
+                        <div class="mb-3 col-12">
+                            <div class="md-3 row">
+                                <div class="md-3 col">
+                                    <label for="quantity" class="col-form-label">Quantity</label>
+                                    <div>
+                                        <div>
+                                            <input type="number" class="form-control" placeholder="Piece"
+                                                name="medistock" id="quantity">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md-3 col">
+                                    <label for="price" class="col-form-label">Price</label>
+                                    <div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Taka" name="mediprice"
+                                                id="price">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- button -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="recent--worker">
                 <div class="title">
-                    <h2 class="section--title">Booking Schedule List</h2>
+                    <h2 class="section--title">Medicine List</h2>
                 </div>
-                <div>
+                <div class="table">
                     <table class="table table-bordered">
                         <thead>
-
-
                             <tr>
-
-                                <th>Service Title</th>
-                                <th>Current Address</th>
-                                <th>Destination</th>
-                                <th>Service Date</th>
-                                <th>Paymemt Mathod</th>
-                                <th>Status</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Strength</th>
+                                <th>Geenric Name</th>
+                                <th>Company</th>
+                                <th>Stock</th>
+                                <th>Price per unit</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% allBooking.map(service=>{ %>
+                            <% allMedicine.map(service=>{ %>
                                 <tr>
-
+                                    <th scope="row">
+                                        <%= service.mediname%>
+                                    </th>
                                     <td>
-                                        <%=service.ser_title%>
-                                    </td>                                 
-                                    <td>
-                                        <%=service.current_address%>
+                                        <%= service.meditype%>
                                     </td>
                                     <td>
-                                        <%=service.des_house%>, Road No: <%=service.des_road%>, Division:
-                                                <%=service.des_division%>,
-                                                    District:
-                                                    Chattogram, Thana/Upazila: <%=service.des_upazila%>
+                                        <%= service.medistrength%>
                                     </td>
                                     <td>
-                                        <%=service.fdate%>
+                                        <%= service.medigeneric%>
                                     </td>
                                     <td>
-                                        <%=service.payment_mathod%>
+                                        <%= service.medicompany%>
                                     </td>
-                                    <%if(service.status==0){%>
-                                        <td class="pending">Pending</td>                                        
-                                        <% }else if(service.status==1){ %>
-                                            <td class="confirmed">Active</td>                                            
-                                            <% }else{ %>
-                                                <td class="pending">Hold</td>                                                
-                                            <% } %>
-
+                                    <td>
+                                        <%= service.stock%> Piece(s)
+                                    </td>
+                                    <td>
+                                        <%= service.price%> tk
+                                    </td>
                                 </tr>
-
-
                                 <% }) %>
+
 
                         </tbody>
                     </table>
@@ -125,4 +200,29 @@
         </div>
     </section>
 
-    <script src=""></script>
+    <script>
+        const mediid = document.getElementById("mediid")
+        console.log(mediid)
+        mediid.addEventListener('change', e => {
+            console.log(e.target.value)
+            fetch(
+                `/medicine?mid=${e.target.value}`,
+            ).then(
+                res => res.json()
+            ).then(data => {
+                console.log(data)
+                const mediname = document.getElementById("mediname")
+                const meditype = document.getElementById("meditype")
+                const medistrength = document.getElementById("medistrength")
+                const medigeneric = document.getElementById('medigeneric')
+                const medicompany = document.getElementById('medicompany')
+                mediname.value = data.name
+                meditype.value = data.type
+                medistrength.value = data.strength
+                medigeneric.value = data.generic
+                medicompany.value = data.company
+            })
+
+        })
+
+    </script>

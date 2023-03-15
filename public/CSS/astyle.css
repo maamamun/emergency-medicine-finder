@@ -472,7 +472,9 @@ a {
 .scheduled {
     color: #5073fb;
 }
-
+#shomap{
+    height: 300px;
+  }
 
 /* recent--worker */
 

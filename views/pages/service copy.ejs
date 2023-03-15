@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/worker">
+                    <a href="/shopkeeper">
                         <span class="icon icon-7"><i class="ri-user-2-line"></i></span>
                         <span class="sidebar--item" style="white-space: nowrap;">Shopkeeper</span>
                     </a>
@@ -70,11 +70,11 @@
                     <h2 class="section--title">Add Medicine</h2>
                 </div>
                 <div class="container">
-                    <form action="/add-medi" method="post">
+                    <form action="/add-service" method="post">
                         <div class="mb-3 col-12">
                             <div class="md-3 row">
                                 <div class="md-3 col">
-                                    <label for="mediname" class="col-form-label">Medicine Name</label>
+                                    <label for="item" class="col-form-label">Medicine Name</label>
                                     <div>
                                         <div>
                                             <input type="text" class="form-control" placeholder="Enter Medicine Title"
@@ -83,9 +83,9 @@
                                     </div>
                                 </div>
                                 <div class="md-3 col">
-                                    <label for="type" class="col-form-label">Type of Medicine</label>
+                                    <label for="quantity" class="col-form-label">Type of Medicine</label>
                                     <div>
-                                        <select class="form-select" id="type" aria-label="Default select example" name="meditype">
+                                        <select class="form-select" id="item" aria-label="Default select example">
                                             <option selected>Select Medicine Type:</option>
                                             <option value="Tablet">Tablet</option>
                                             <option value="Capsule">Capsule</option>
@@ -103,7 +103,7 @@
                         <div class="mb-3 col-12">
                             <div class="md-3 row">
                                 <div class="md-3 col">
-                                    <label for="medistrength" class="col-form-label">Strength</label>
+                                    <label for="item" class="col-form-label">Strength</label>
                                     <div>
                                         <div>
                                             <input type="text" class="form-control" placeholder="100mg"
@@ -135,38 +135,41 @@
             </div>
             <div class="recent--worker">
                 <div class="title">
-                    <h2 class="section--title">Medicine List</h2>
+                    <h2 class="section--title">My Service List</h2>
+                    <button class="add"><i class="ri-add-line"></i>Add Service</button>
                 </div>
                 <div class="table">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Strength</th>
-                                <th>Geenric Name</th>
-                                <th>Company</th>
+                                <th>Title</th>
+                                <th>Details</th>
+                                <th>Date in</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% allService.map(service=>{ %>
                                 <tr>
                                     <th scope="row">
-                                        <%= service.name%>
+                                        <%= service.stitle%>
                                     </th>
                                     <td>
-                                        <%= service.type%>
+                                        <%= service.items%> also <%= service.details%>
                                     </td>
                                     <td>
-                                        <%= service.strength%>
+                                        <%= service.fdate%>
                                     </td>
                                     <td>
-                                        <%= service.generic%>
+                                        <%= service.status%>
                                     </td>
                                     <td>
-                                        <%= service.company%>
+                                        <%= service.price%> BDT
                                     </td>
-                                    
+                                    <td><span><i class="ri-edit-line edit"></i><i
+                                                class="ri-delete-bin-line delete"></i></span></td>
 
                                 </tr>
                                 <% }) %>

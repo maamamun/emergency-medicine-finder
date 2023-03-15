@@ -44,7 +44,7 @@ const UserController = {
   getAbout: async (req, res) => {
     const uId = localStorage.getItem("userMail");
     const userData = await UserModels.getUser(uId)
-  
+
     res.render('pages/about', { uId, userData })
   },
   getContact: async (req, res) => {
@@ -74,12 +74,12 @@ const UserController = {
     const allBooking = await UserModels.getallBooking()
     const adminData = localStorage.getItem("adminData");
 
-    res.render('pages/admin', { allUser, allService, allWorker, allBooking, adminData  })
+    res.render('pages/admin', { allUser, allService, allWorker, allBooking, adminData })
   },
   getBooking: async (req, res) => {
     const allBooking = await UserModels.getallBooking()
     const allUser = await UserModels.getallUser()
-   
+
     res.render('pages/booking', { allBooking, allUser })
   },
   getBookingC: async (req, res) => {
@@ -88,32 +88,34 @@ const UserController = {
     const userData = await UserModels.getUser(uId);
     const serData = await UserModels.getService(sId);
 
-    res.render('pages/bookingservice', { uId,userData, serData })
+    res.render('pages/bookingservice', { uId, userData, serData })
   },
   getBooked: async (req, res) => {
     const uId = localStorage.getItem("userMail");
     const userData = await UserModels.getUser(uId);
     const userBooking = await UserModels.getUserBooking(uId);
-    
+
     res.render('pages/booked', { uId, userData, userBooking })
   },
   getUser: async (req, res) => {
     const allUser = await UserModels.getallUser()
-    res.render('pages/user', {  allUser })
+    res.render('pages/user', { allUser })
   },
 
   getWorker: async (req, res) => {
     const allWorker = await UserModels.getallWorker()
-   
+
     res.render('pages/worker', { allWorker })
   },
 
   getWorkerDesh: async (req, res) => {
     const uId = localStorage.getItem("workerData");
     const workerData = await UserModels.workermailCatchM(uId);
-    const allBooking = await UserModels.getallBooking()
-    
-    res.render('pages/workerdesh', { uId, allBooking,workerData })
+    const allService = await UserModels.getaService()
+    const allMedicine = await UserModels.getMedicine(uId)
+
+    console.log(allMedicine)
+    res.render('pages/workerdesh', { uId, allService, workerData, allMedicine })
   },
 
   bookData: async (req, res) => {
@@ -131,17 +133,18 @@ const UserController = {
 
   getServiceData: async (req, res) => {
     const allService = await UserModels.getaService()
+    console.log(allService)
     res.render('pages/service', { allService })
   },
 
 
 
-  serviceData: async (req, res) => {
+  mediData: async (req, res) => {
     try {
       const {
-        stitle, items, details, price, date, status
+        mediname, meditype, medistrength, medigeneric, medicompany
       } = req.body;
-      const servie = await UserModels.servie(stitle, items, details, price, date, status);
+      const servie = await UserModels.medicine(mediname, meditype, medistrength, medigeneric, medicompany);
       if (servie.errno) {
         res.send('Something went wrong')
       } else {
@@ -153,15 +156,32 @@ const UserController = {
     }
   },
 
+  medicineData: async (req, res) => {
+    try {
+      const {
+        shopemail, mediname, meditype, medistrength, medigeneric, medicompany, medistock, mediprice
+      } = req.body;
+      const servie = await UserModels.shopmedicine(shopemail, mediname, meditype, medistrength, medigeneric, medicompany, medistock, mediprice);
+      if (servie.errno) {
+        res.send('Something went wrong')
+      } else {
+        res.redirect('/workers')
+      }
+    } catch (e) {
+      console.log(e)
+      res.send('Wrong')
+    }
+  },
+
   /* User login controller */
   loginC: async (req, res) => {
     try {
       const { email, pass } = req.body;
 
       const errors = validationResult(req).formatWith((error) => error.msg);
-   
+
       if (!errors.isEmpty()) {
-   
+
         return res.render('pages/login', {
           error: errors.mapped(),
           value: { email, pass },
@@ -171,18 +191,18 @@ const UserController = {
       const userName = user[0].first_name;
       const userMail = user[0].email;
       const password = user[0].pass;
-  
+
 
 
       if (user[0].u_id !== '') {
- 
+
         const isValidPassword = await bcrypt.compare(pass, password);
         if (isValidPassword) {
           if (user[0].status == 1) {
 
 
 
-           
+
 
             localStorage.setItem('userMail', `${userMail}`)
 
@@ -194,14 +214,14 @@ const UserController = {
               process.env.JWT_SECRET,
               { expiresIn: maxAge },
             )
-         
+
             if (token !== null) {
               res.cookie(process.env.COOKIE_NAME, token, { maxAge, httpOnly: true, signed: true });
-              
+
               const allService = await UserModels.getaService()
               const uId = localStorage.getItem("userMail");
               const userData = await UserModels.getUser(uId)
-              
+
 
               res.render('pages/home', { uId, allService, userData })
 
@@ -213,7 +233,7 @@ const UserController = {
           res.render('pages/login', { auth: true });
         }
       } else {
-      
+
         res.render('pages/login', { auth: true });
       }
     } catch (err) {
@@ -312,10 +332,10 @@ const UserController = {
 
       if (userid && pass) {
         const alogin = await UserModels.getAdmin(userid);
-      
+
         if (alogin.length > 0) {
-          for (let i = 0; i < alogin.length; i++) {            
-            if (pass==alogin[0].pass) {
+          for (let i = 0; i < alogin.length; i++) {
+            if (pass == alogin[0].pass) {
               localStorage.setItem(`adminData`, `${userid}`);
               res.redirect('/admin');
             } else {
@@ -354,7 +374,7 @@ const UserController = {
     const images = req.files;
     propicFilename = images.propic[0].filename
 
-   
+
     if (!errors.isEmpty()) {
       res.render('pages/signup', { uId, user });
       return res.render('pages/signup', {
@@ -372,7 +392,7 @@ const UserController = {
       const subject = 'EMF Service active account';
       const textMessage = 'EMF Service account verify'
       const link = `${process.env.BASE_UR}`
-         const activeBtn = `
+      const activeBtn = `
       <div style="padding: 0px 20px;margin-left: 8px;text-align: center;">
       <h4>Wellcome  ${firstName} ${lastName}.<h4>
       <p>If you are sinup for EMF Service.<p> <br>
@@ -397,7 +417,7 @@ const UserController = {
       sendMail(email, subject, textMessage, activeBtn)
       res.redirect('/login')
     } catch (err) {
-     
+
       return res.render('pages/signup', { registerFail: true });
     }
   },
@@ -405,35 +425,48 @@ const UserController = {
   /* ======Worker Register controller ====== */
   insertWorkerRegisterC: async (req, res) => {
     try {
-      const { firstName, lastName, gender, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, pass } = req.body;
+      const { firstName, lastName, gender, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat, lng, pass } = req.body;
       const images = req.files;
       propicFilename = images.propic[0].filename
       nid1Filename = images.nid1[0].filename
       nid2Filename = images.nid2[0].filename
-    
 
       const hashPassword = await bcrypt.hash(pass, 10);
-
+      console.log("ok")
       const registerData = await UserModels.insertWorkerRegisterM(
-        firstName, lastName, gender, email, phone, propicFilename, nid1Filename, nid2Filename, house, road, division, zila, upazila, hashPassword
+        firstName, lastName, gender, email, phone, propicFilename, nid1Filename, nid2Filename, house, road, division, zila, upazila, lat, lng, hashPassword
       );
-      
+      console.log(registerData)
       // return res.render('pages/workersignup', { workerauth: true });
       res.redirect('/workerlogin')
     } catch (err) {
-      
+
       return res.render('pages/workersignup', { registerFail: true });
     }
   },
 
   /* ======Worker Register controller ====== */
+
+  getMedicineData: async (req, res) => {
+    const { mid } = req.query
+    const allRawMedicine = await UserModels.getRawMedicine(mid)
+    console.log(allRawMedicine)
+    res.send(allRawMedicine)
+  },
+  getSearchMediData: async (req, res) => {
+    const { mname } = req.query
+    console.log("name",mname)
+    const allSearchMedicine = await UserModels.getSearchMedicine(mname)
+    console.log(allSearchMedicine)
+    res.send(allSearchMedicine)
+  },
   insertBooking: async (req, res) => {
     try {
       const { uId, userEmail, userPhone, currentAddress, desHouse, desRoad, desDivision, desZila, desUpazila, serId, serTitle, serPrice, serDate, paymentMathod, paymentProof } = req.body;
       const images = req.files;
       paymentProofFilename = images.paymentProof[0].filename
 
-   
+
 
       const registerData = await UserModels.insertBooking(
         uId, userEmail, userPhone, currentAddress, desHouse, desRoad, desDivision, desZila, desUpazila, serId, serTitle, serPrice, serDate, paymentMathod, paymentProofFilename
@@ -464,7 +497,7 @@ const UserController = {
 
   accountVerify: async (req, res) => {
     const userId = req.params.id
-  
+
     const isUpdate = await UserModels.updateStatus(userId)
     if (isUpdate.affectedRows) {
       res.redirect('/login')
@@ -473,7 +506,7 @@ const UserController = {
 
   workerAccountVerify: async (req, res) => {
     const userId = req.params.id
-   
+
     const isUpdate = await UserModels.workeracUpdateStatus(userId)
     if (isUpdate.affectedRows) {
       res.redirect('/worker')
@@ -482,7 +515,7 @@ const UserController = {
 
   workerAccountHold: async (req, res) => {
     const userId = req.params.id
-  
+
     const isUpdate = await UserModels.workerHoaldUpdateStatus(userId)
     if (isUpdate.affectedRows) {
       res.redirect('/worker')
@@ -491,7 +524,7 @@ const UserController = {
 
   bookingVerify: async (req, res) => {
     const userId = req.params.id
-   
+
     const isUpdate = await UserModels.bookingUpdateStatus(userId)
     if (isUpdate.affectedRows) {
       res.redirect('/booking')
@@ -500,7 +533,7 @@ const UserController = {
 
   bookingHold: async (req, res) => {
     const userId = req.params.id
-   
+
     const isUpdate = await UserModels.bookingHoaldUpdateStatus(userId)
     if (isUpdate.affectedRows) {
       res.redirect('/booking')

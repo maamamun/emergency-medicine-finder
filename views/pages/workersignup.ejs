@@ -1,4 +1,9 @@
 <%- include("../template/header"); -%>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    
   <div class="hero_area">
     <div class="hero_bg_box">
       <img src="images/hero-bg.jpg" alt="">
@@ -89,7 +94,8 @@
                         <a class="nav-link" aria-current="page" href="/login" value="user" id="user">User Login</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/workerlogin" value="worker" id="worker">Shopkeeper
+                        <a class="nav-link" aria-current="page" href="/workerlogin" value="worker"
+                          id="worker">Shopkeeper
                           Login</a>
                       </li>
 
@@ -167,7 +173,7 @@
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" placeholder="House" name="house"/>
+                    <input type="text" class="form-control" placeholder="House" name="house" />
                   </div>
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" placeholder="Road" name="road" />
@@ -191,11 +197,21 @@
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" placeholder="Upazila/Thana" name="upazila"/>
+                    <input type="text" class="form-control" placeholder="Upazila/Thana" name="upazila" />
                   </div>
+                  <br>
+
+                  <input type="text" id="lat" placeholder="lat" name="lat" hidden> <br>
+                  <input type="text" id="lan" placeholder="lan" name="lng" hidden>
+
+                  <br>
                   <div class="form-group col-md-6">
                     <input type="password" class="form-control" placeholder="Password" name="pass" />
                   </div>
+                </div>
+                <label for="shopmap">Pin your location</label>
+                <div id="shopmap">
+
                 </div>
                 <div class="btn-box">
                   <button type="submit" class="submit_btn">
@@ -216,5 +232,36 @@
 
     <script src="/js/signup.js"></script>
     <script>
-     
+      const map = L.map('shopmap', { doubleClickZoom: false }).locate({ setView: true, maxZoom: 30 });
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      navigator.geolocation.getCurrentPosition(position => {
+        const { coords: { latitude, longitude } } = position;
+        const lat = document.getElementById('lat')
+        const lng = document.getElementById('lan')
+        lat.value = latitude
+        lng.value = longitude
+        var marker = L.marker([latitude, longitude], {
+          draggable: true,
+          autoPan: true
+        }).addTo(map);
+        marker.on("drag", function (e) {
+          var marker = e.target;
+          var position = marker.getLatLng();
+          console.log(position)
+          const lat = document.getElementById('lat')
+          const lng = document.getElementById('lan')
+          lat.value = position.lat
+          lng.value = position.lng
+        });
+        console.log(marker);
+      })
+      console.log(map)
+
+
+
+
+
     </script>
