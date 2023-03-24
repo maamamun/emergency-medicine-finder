@@ -457,8 +457,9 @@ const UserController = {
     const { mname } = req.query
     console.log("name",mname)
     const allSearchMedicine = await UserModels.getSearchMedicine(mname)
-    console.log(allSearchMedicine)
+    
     res.send(allSearchMedicine)
+    console.log("send",allSearchMedicine)
   },
   insertBooking: async (req, res) => {
     try {

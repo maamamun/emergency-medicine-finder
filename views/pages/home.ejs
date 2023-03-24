@@ -8,154 +8,38 @@
 
     <br>
 
-    <!-- service section -->
 
     <label for="shopmap">Pin your location</label>
     <div id="shopmap">
 
     </div>
+    <br>
+    <!-- Admin service section -->
 
     <section class="service_section layout_padding-bottom">
       <div class="service_container">
-        <div class="container">
+        <div class="container" id="viwe">
           <div class="heading_container heading_center">
             <h2>
-              Our <span>Product</span>
+              Viwe <span>Product</span>
             </h2>
             <p>
               There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
             </p>
           </div>
-          <div class="row">
-            <div class="col-sm-6 col-lg-4 mx-auto ">
-              <div class="box">
-                <div class="img-box">
-                  <img src="images/s1.png" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    <%= allService[0].stitle%>
-                  </h5>
-                  <p>
-                    <%= allService[0].items %>
-                  </p>
-                  <p>
-                    <%= allService[0].details %>
-                  </p>
-                  <% if(uId) { %>
-                    <h5>
-                      Price <%= allService[0].price%> BDT (per pice)
-                    </h5>
-                </div>
-                <form action="/book-service" method="post">
-                  <div class="btn-box">
-                    <input type="hidden" name="service_id" value="<%= allService[0].ser_id %>">
-                    <button type="submit">
-                      Order Now
-                    </button>
-                  </div>
-                </form>
-                <% } else{ %>
-              </div>
-              <div class="btn-box">
-                <a href="/login">
-                  Order
-                </a>
-              </div>
-
-              <% } %>
-
-            </div>
+          <div class="row" id="data">
+           
           </div>
-          <div class="col-sm-6 col-lg-4 mx-auto ">
-            <div class="box">
-              <div class="img-box">
-                <img src="images/s1.png" alt="">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  <%= allService[1].stitle%>
-                </h5>
-                <p>
-                  <%= allService[1].items %>
-                </p>
-                <p>
-                  <%= allService[1].details %>
-                </p>
-                <% if(uId) { %>
-                  <h5>
-                    Price <%= allService[1].price%> BDT
-                  </h5>
-              </div>
-              <form action="/book-service" method="post">
-                <div class="btn-box">
-                  <input type="hidden" name="service_id" value="<%= allService[1].ser_id %>">
-                  <button type="submit">
-                    Order Now
-                  </button>
-                </div>
-              </form>
-              <% } else{ %>
-            </div>
-            <div class="btn-box">
-              <a href="/login">
-                Order
-              </a>
-            </div>
-
-            <% } %>
-
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-4 mx-auto ">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/s1.png" alt="">
-            </div>
-            <div class="detail-box">
-              <h5>
-                <%= allService[2].stitle%>
-              </h5>
-              <p>
-                <%= allService[2].items %>
-              </p>
-              <p>
-                <%= allService[2].details %>
-              </p>
-              <% if(uId) { %>
-                <h5>
-                  Price <%= allService[2].price%> BDT
-                </h5>
-            </div>
-            <form action="/book-service" method="post">
-              <div class="btn-box">
-                <input type="hidden" name="service_id" value="<%= allService[2].ser_id %>">
-                <button type="submit">
-                  Order Now
-                </button>
-              </div>
-            </form>
-            <% } else{ %>
-          </div>
-          <div class="btn-box">
-            <a href="/login">
-              Order
-            </a>
-          </div>
-
-          <% } %>
 
         </div>
-      </div>
 
-      </div>
-      <div class="btn-box">
-        <a href="/services">
-          View More
-        </a>
-      </div>
-      </div>
-      </div>
+
+        <div class="btn-box">
+          <a href="/services">
+            View More
+          </a>
+        </div>
+
     </section>
 
     <!-- end service section -->
@@ -204,6 +88,7 @@
 
 
     <!-- end Offer section -->
+
     <% if(!uId) { %>
 
       <!-- contact section -->
@@ -256,6 +141,7 @@
         <% } %>
 
 
+
           <% if(uId) { %>
             <script src="/js/custom.js"></script>
             <% } else{ %>
@@ -277,7 +163,10 @@
                   <script src="js/custom.js"></script>
 
                   <script>
+                    const getdiv2 = document.getElementById("data")
+                    console.log("2", getdiv2)
                     const markers = []
+                    let demo = []
                     let curentlat = 0.00
                     let curentlng = 0.00
                     function calculateDistance(lat1, lon1, lat2, lon2, unit) {
@@ -323,15 +212,53 @@
                             autoPan: true
                           }).addTo(map);
                           if (i === 0) {
-                            marker.bindPopup(`${data[i].shop_email}.<br> ${data[i].mediname}(${data[i].medistrength})<br>Price:${data[i].price} tk`).openPopup()
+                            marker.bindPopup(`${data[i].shopname}.<br> ${data[i].mediname}(${data[i].medistrength})<br>Price:${data[i].price} tk`).openPopup()
                           } else {
-                            marker.bindPopup(`${data[i].shop_email}.<br> ${data[i].mediname}(${data[i].medistrength})<br> Price:${data[i].price} tk`)
+                            marker.bindPopup(`${data[i].shopname}.<br> ${data[i].mediname}(${data[i].medistrength})<br> Price:${data[i].price} tk`)
                           }
                           markers.push(marker)
 
-                        }
-                        console.log('sorted data', data)
 
+                        }
+                        let newHtml = ''
+                        for (i = 0; i < data.length; i++) {
+                          console.log(data.length)
+                          newHtml += ` 
+                   
+            <div class="col-sm-6 col-lg-4 mx-auto ">
+              <div class="box">
+                <div class="img-box">
+                  <img src="images/s1.png" alt="">
+                </div>
+                <div class="detail-box">
+                  <h5>
+                    ${data[i].shopname}
+                  </h5>
+                  <p>
+                    ${data[i].mediname} (${data[i].meditype})
+                  </p>
+                  <p>
+                    ${data[i].medigeneric} (${data[i].medistrength})
+                  </p>
+                  
+                  <h5>
+                    Price ${data[i].price} BDT (per pice)
+                  </h5>
+                </div>
+                <div class="btn-box">
+                  <a href="/login">
+                    Order
+                  </a>
+                </div>
+              </div>
+            </div>
+                          `
+                        }
+                        getdiv2.innerHTML = newHtml
+
+                        console.log('sorted data', newHtml)
+
+                        demo = data
                       })
 
                     })
