@@ -19,10 +19,10 @@ const UserModels = {
     }
   },
     /* ====== worker Register Model ===== */
-    insertWorkerRegisterM: async (firstName, lastName, gender, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat,lng, pass) => {
+    insertWorkerRegisterM: async (firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat,lng, pass) => {
       try {
-        const insertRegis = 'INSERT INTO `worker`( `first_name`, `last_name`, `gender`, `email`, `phone`, `propic`, `nid1`, `nid2`, `house`, `road`, `division`, `zila`, `upazila`,lat, lng, `pass`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-        const values = [firstName, lastName, gender, email, phone, propic, nid1, nid2, house, road, division, zila, upazila,lat,lng, pass];
+        const insertRegis = 'INSERT INTO `worker`( `first_name`, `last_name`, `gender`, `shopname`, `email`, `phone`, `propic`, `nid1`, `nid2`, `house`, `road`, `division`, `zila`, `upazila`,lat, lng, `pass`) VALUES (?,?http://localhost:3000/verify-worker-account/,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        const values = [firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila,lat,lng, pass];
     console.log("Doom data", values)
         return await dbConnect.promise().execute(insertRegis, values);
       } catch (err) {

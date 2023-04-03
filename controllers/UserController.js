@@ -271,7 +271,7 @@ const UserController = {
 
                 res.redirect('/workers');
               } else {
-                res.send('Active your account.');
+                res.send('Your account not active.');
               }
             } else {
               res.send('Incorrect Password');
@@ -399,7 +399,7 @@ const UserController = {
       <p>Please EMF Service account verify. Othewise ignore the mail. <p>
       </div>
       <div>
-      <a style="cursor: pointer;" href="http://localhost:3000/verify-account/${registerData[0].insertId}">
+      <a style="cursor: pointer;" href="http://localhost:3802/verify-account/${registerData[0].insertId}">
       <button style="padding: 0px 20px;
       border-radius: 8px;
       background-color: #188bde;
@@ -425,7 +425,7 @@ const UserController = {
   /* ======Worker Register controller ====== */
   insertWorkerRegisterC: async (req, res) => {
     try {
-      const { firstName, lastName, gender, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat, lng, pass } = req.body;
+      const { firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat, lng, pass } = req.body;
       const images = req.files;
       propicFilename = images.propic[0].filename
       nid1Filename = images.nid1[0].filename
@@ -434,7 +434,7 @@ const UserController = {
       const hashPassword = await bcrypt.hash(pass, 10);
       console.log("ok")
       const registerData = await UserModels.insertWorkerRegisterM(
-        firstName, lastName, gender, email, phone, propicFilename, nid1Filename, nid2Filename, house, road, division, zila, upazila, lat, lng, hashPassword
+        firstName, lastName, gender, shopname, email,  phone, propicFilename, nid1Filename, nid2Filename, house, road, division, zila, upazila, lat, lng, hashPassword
       );
       console.log(registerData)
       // return res.render('pages/workersignup', { workerauth: true });

@@ -118,17 +118,17 @@
                                     <%if(worker.status==0){%>
                                         <td class="pending">Pending</td>
                                         <td><a class="btn btn-primary"
-                                                href="http://localhost:3000/verify-worker-account/<%=worker.w_id%>">Accept</a>
+                                                href="http://localhost:3802/verify-worker-account/<%=worker.w_id%>">Accept</a>
                                         </td>
                                         <% }else if(worker.status==1){ %>
                                             <td class="confirmed">Active</td>
                                             <td><a class="btn btn-primary"
-                                                    href="http://localhost:3000/hold-worker-account/<%=worker.w_id%>">Blocked</a>
+                                                    href="http://localhost:3802/hold-worker-account/<%=worker.w_id%>">Blocked</a>
                                             </td>
                                             <% }else{ %>
                                                 <td class="pending">Hold</td>
                                                 <td><a class="btn btn-primary"
-                                                        href="http://localhost:3000/verify-worker-account/<%=worker.w_id%>">Active</a>
+                                                        href="http://localhost:3802/verify-worker-account/<%=worker.w_id%>">Active</a>
                                                 </td>
                                                 <% } %>
                                 </tr>

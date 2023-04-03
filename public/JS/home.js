@@ -6,6 +6,17 @@ const markers = []
 let demo = []
 let curentlat = 0.00
 let curentlng = 0.00
+
+let greenIcon = L.icon({
+  iconUrl: 'images/map-marker.png',
+  // shadowUrl: 'leaf-shadow.png',
+  iconSize:     [20, 75], // size of the icon
+  // shadowSize:   [50, 64], // size of the shadow
+  iconAnchor:   [4, 94], // point of the icon which will correspond to marker's location
+  // shadowAnchor: [4, 62],  // the same for the shadow
+  popupAnchor:  [4, -76] // point from which the popup should open relative to the iconAnchor
+});
+
 function calculateDistance(lat1, lon1, lat2, lon2, unit) {
   var radlat1 = Math.PI * lat1 / 180
   var radlat2 = Math.PI * lat2 / 180
@@ -44,7 +55,8 @@ searchInput.addEventListener('input', e => {
     for (i = 0; i < data.length; i++) {
       var marker = L.marker([data[i].lat, data[i].lng], {
         draggable: false,
-        autoPan: true
+        autoPan: true,
+        icon: greenIcon
       }).addTo(map);
       if (i === 0) {
         marker.bindPopup(`${data[i].shopname}.<br> ${data[i].mediname}(${data[i].medistrength})<br>Price:${data[i].price} tk`).openPopup()
@@ -73,18 +85,21 @@ searchInput.addEventListener('input', e => {
                     ${data[i].mediname} (${data[i].meditype})
                   </p>
                   <p>
-                    ${data[i].medigeneric} (${data[i].medistrength})
+                    Strentgh: ${data[i].medistrength}
                   </p>
-                  
+                  <p>
+                    ${data[i].medigeneric} 
+                  </p>
                   <h5>
                     Price ${data[i].price} BDT (per pice)
                   </h5>
                 </div>
-                <div class="btn-box">
-                  <a href="/login">
-                    Order
+                   <div class="btn-box">
+                  <a href="#">
+                  <!--  Order -->
+                  -
                   </a>
-                </div>
+                </div> 
               </div>
             </div>
                           `

@@ -252,8 +252,11 @@ a:focus {
 .custom_nav-container .navbar-nav {
   margin-left: auto;
 }
+#shopmap1{
+  height: 400px;
+}
 #shopmap{
-  height: 300px;
+  height: 500px;
 }
 
 /* Bootstrap 4 text input with search icon */
