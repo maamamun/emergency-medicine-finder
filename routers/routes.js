@@ -20,23 +20,13 @@ const decorateHtmlResponse = require('../middleware/decorateHtmlResponse');
 router.get('/', UserController.getHome)
 router.get('/home', UserController.getHome)
 router.get('/about', UserController.getAbout)
-router.get('/contact', UserController.getContact)
-router.get('/offer', UserController.getOffer)
-router.get('/services', UserController.getServices)
 router.get('/admin', UserController.getAdmin)
-router.get('/booking', UserController.getBooking)
-router.get('/bookingservice', UserController.getBookingC)
 router.get('/booked', UserController.getBooked)
 router.get('/user', UserController.getUser)
 router.get('/worker', UserController.getWorker)
 router.get('/workers', UserController.getWorkerDesh)
 router.get('/service', UserController.getServiceData)
-router.get(
-  '/login',
-  decorateHtmlResponse('Home'), redirectLoggedIn,
-
-  UserController.newlogin,
-);
+router.get('/login',decorateHtmlResponse('Home'), redirectLoggedIn,UserController.newlogin,);
 
 router.get(
   '/workerlogin', UserController.workerlogin,
@@ -56,6 +46,13 @@ router.get(
 );
 
 router.get(
+  '/userupdate',
+  decorateHtmlResponse('SignUp'),
+  checkCurrentLogin,
+  UserController.userUpadateC,
+);
+
+router.get(
   '/workersignup',
   decorateHtmlResponse('SignUp'),
   UserController.workerRegisterC,
@@ -68,12 +65,9 @@ router.get('/adminlogout', UserController.adminLogout);
 router.get('/verify-account/:id', UserController.accountVerify)
 router.get('/verify-worker-account/:id', UserController.workerAccountVerify)
 router.get('/hold-worker-account/:id', UserController.workerAccountHold)
-router.get('/verify-booking/:id', UserController.bookingVerify)
-router.get('/hold-booking/:id', UserController.bookingHold)
 
 /* ======= Post routes ======== */
 router.post('/alogin', UserController.adminLoginData)
-router.post('/book-service', UserController.bookData)
 router.post('/add-medi', UserController.mediData)
 router.post('/add-medicine', UserController.medicineData)
 router.post('/login', decorateHtmlResponse('Login'), UserController.loginC)
@@ -84,16 +78,19 @@ router.post(
   singupValidator,
   UserController.insertRegisterC,
 );
+
+router.post(
+  '/userupdate', upload.fields([{ name: 'propic' }]),
+  decorateHtmlResponse('Upadte'),
+  singupValidator,
+  UserController.insertUserUpadateC,
+);
+
 router.post(
   '/workersignup', upload.fields([{ name: 'propic' },
    { name: 'nid1' }, 
    { name: 'nid2' }]),
   UserController.insertWorkerRegisterC,
-);
-
-router.post(
-  '/bookingservice', upload.fields([{ name: 'paymentProof' }]),
-  UserController.insertBooking,
 );
 
  router.get(

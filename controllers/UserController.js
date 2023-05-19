@@ -59,13 +59,6 @@ const UserController = {
 
     res.render('pages/offer', { uId, userData })
   },
-  getServices: async (req, res) => {
-
-    const allService = await UserModels.getaService()
-    const uId = localStorage.getItem("userMail");
-    const userData = await UserModels.getUser(uId);
-    res.render('pages/services', { allService, uId, userData })
-  },
   // Admin Related
   getAdmin: async (req, res) => {
     const allUser = await UserModels.getallUser()
@@ -75,20 +68,6 @@ const UserController = {
     const adminData = localStorage.getItem("adminData");
 
     res.render('pages/admin', { allUser, allService, allWorker, allBooking, adminData })
-  },
-  getBooking: async (req, res) => {
-    const allBooking = await UserModels.getallBooking()
-    const allUser = await UserModels.getallUser()
-
-    res.render('pages/booking', { allBooking, allUser })
-  },
-  getBookingC: async (req, res) => {
-    const sId = localStorage.getItem("bookingData");
-    const uId = localStorage.getItem("userMail");
-    const userData = await UserModels.getUser(uId);
-    const serData = await UserModels.getService(sId);
-
-    res.render('pages/bookingservice', { uId, userData, serData })
   },
   getBooked: async (req, res) => {
     const uId = localStorage.getItem("userMail");
@@ -116,18 +95,6 @@ const UserController = {
     res.render('pages/workerdesh', { uId, allService, workerData, allMedicine })
   },
 
-  bookData: async (req, res) => {
-    try {
-      const {
-        service_id
-      } = req.body;
-      localStorage.setItem(`bookingData`, `${service_id}`);
-      res.redirect('/bookingservice')
-
-    } catch (e) {
-      res.send('Somthing Wrong')
-    }
-  },
 
   getServiceData: async (req, res) => {
     const allService = await UserModels.getaService()
@@ -292,17 +259,23 @@ const UserController = {
   registerC: async (req, res) => {
     const uId = localStorage.getItem("userMail");
     const user = await UserModels.getUser(uId)
-
     res.render('pages/signup', { uId, user });
   },
   /* ====== New Worker register  Controller  ====== */
   workerRegisterC: async (req, res) => {
     const uId = localStorage.getItem("userMail");
     const user = await UserModels.getUser(uId)
-
     res.render('pages/workersignup', { uId, user });
   },
 
+  /* ====== User upadate  Controller  ====== */
+
+  userUpadateC: async (req, res) => {
+    const uId = localStorage.getItem("userMail");
+    const user = await UserModels.getUser(uId)
+    console.log(user)
+    res.render('pages/edituser', { uId, user });
+  },
 
   /* ====== New login Controller  ====== */
 
@@ -451,20 +424,65 @@ const UserController = {
 
     res.send(allSearchMedicine)
   },
-  insertBooking: async (req, res) => {
+
+
+
+  /* ====== user update controller ====== */
+  insertUserUpadateC: async (req, res) => {
+    const { userId,firstName, lastName, gender, email, phone, propic, house, road, division, zila, upazila, pass } = req.body;
+    const errors = validationResult(req).formatWith((error) => error.msg);
+    const uId = localStorage.getItem("userMail");
+    const user = await UserModels.getUser(uId)
+    const images = req.files;
+    propicFilename = images.propic[0].filename  
+
+    if (!errors.isEmpty()) {
+      res.render('pages/userupdate', { uId, user });
+      return res.render('pages/userupdate', {
+        error: errors.mapped(),
+        value: { userId,firstName, lastName, gender, email, phone, propicFilename, house, road, division, zila, upazila, pass },
+      });
+    } 
     try {
-      const { uId, userEmail, userPhone, currentAddress, desHouse, desRoad, desDivision, desZila, desUpazila, serId, serTitle, serPrice, serDate, paymentMathod, paymentProof } = req.body;
-      const images = req.files;
-      paymentProofFilename = images.paymentProof[0].filename
+      console.log("domdata", req.body)
+
+        const hashPassword = await bcrypt.hash(pass, 10);
+        const registerData = await UserModels.UserUpadateM(
+          firstName, lastName, gender, email, phone, propicFilename, house, road, division, zila, upazila, hashPassword,userId
+        );
 
 
-
-      const registerData = await UserModels.insertBooking(
-        uId, userEmail, userPhone, currentAddress, desHouse, desRoad, desDivision, desZila, desUpazila, serId, serTitle, serPrice, serDate, paymentMathod, paymentProofFilename
-      );
-      res.redirect('/booked')
+        const toMail = "mamun872381cpi@gmail.com"
+        const subject = 'EMF Service active account';
+        const textMessage = 'EMF Service account verify'
+        const link = `${process.env.BASE_UR}`
+        const activeBtn = `
+        <div style="padding: 0px 20px;margin-left: 8px;text-align: center;">
+        <h4>Wellcome  ${firstName} ${lastName}.<h4>
+        <p>If you are sinup for EMF Service.<p> <br>
+        <p>Please EMF Service account verify. Othewise ignore the mail. <p>
+        </div>
+        <div>
+        <a style="cursor: pointer;" href="http://localhost:3802/verify-account/${userId}">
+        <button style="padding: 0px 20px;
+        border-radius: 8px;
+        background-color: #188bde;
+        border : none;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 36px;
+        color: #FFFFFF;
+        margin-left: 8px;
+        text-align: center;
+        cursor: pointer;">
+        Active account</button></a>
+        </div>
+        `
+        sendMail(email, subject, textMessage, activeBtn)
+        res.redirect('/profile')
     } catch (err) {
-      res.render('pages/bookingservice');
+      console.log("doom err",err)
+      return res.render('pages/userupdate', { registerFail: true });
     }
   },
 
@@ -510,24 +528,6 @@ const UserController = {
     const isUpdate = await UserModels.workerHoaldUpdateStatus(userId)
     if (isUpdate.affectedRows) {
       res.redirect('/worker')
-    }
-  },
-
-  bookingVerify: async (req, res) => {
-    const userId = req.params.id
-
-    const isUpdate = await UserModels.bookingUpdateStatus(userId)
-    if (isUpdate.affectedRows) {
-      res.redirect('/booking')
-    }
-  },
-
-  bookingHold: async (req, res) => {
-    const userId = req.params.id
-
-    const isUpdate = await UserModels.bookingHoaldUpdateStatus(userId)
-    if (isUpdate.affectedRows) {
-      res.redirect('/booking')
     }
   },
 
