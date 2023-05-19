@@ -6,8 +6,8 @@
   <%- include ('../template/nav') -%>
 
 
+  <% if(uId) { %>
     <br>
-
 
     <label for="shopmap">Pin your location</label>
     <div id="shopmap">
@@ -39,7 +39,41 @@
     </section>
 
     <!-- end service section -->
+    <% }%>
+<!-- about section -->
 
+<section class="about_section layout_padding">
+  <div class="container  ">
+    <div class="row">
+      <div class="col-md-6 ">
+        <div class="img-box">
+          <img src="images/about-img.jpg" alt="">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="detail-box">
+          <div class="heading_container">
+            <h2>
+              Find <span>Medicine</span>
+            </h2>
+          </div>
+          <p>
+            Emergency Medicine Finder is a web application that allows users to quickly and easily find the medicine
+            they need in the nearest pharmacy. This project aims to simplify the process of finding emergency
+            medicine, which can often be a time-sensitive and stressful situation.
+          </p>
+          <p>             
+            Our web application provides a user-friendly interface where users can search for the medicine they need
+            and see a list of nearby pharmacies that carry the medicine. The system uses real-time data to ensure
+            that the information displayed is accurate and up-to-date.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- end about section -->
 
     <!-- call section -->
 

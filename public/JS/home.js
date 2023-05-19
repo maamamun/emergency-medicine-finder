@@ -30,6 +30,7 @@ function calculateDistance(lat1, lon1, lat2, lon2, unit) {
   dist = dist * 60 * 1.1515
   if (unit == "K") { dist = dist * 1.609344 }
   if (unit == "N") { dist = dist * 0.8684 }
+  
   return dist
 }
 const map = L.map('shopmap', { doubleClickZoom: false }).locate({ setView: true, maxZoom: 30 });
@@ -49,6 +50,8 @@ searchInput.addEventListener('input', e => {
     }
 
     data.sort(function (a, b) {
+      const disData=a.distance - b.distance;
+      console.log("Disdata",disData,"km")
       return a.distance - b.distance;
     });
     markers.forEach(m => map.removeLayer(m))
@@ -91,13 +94,13 @@ searchInput.addEventListener('input', e => {
                     ${data[i].medigeneric} 
                   </p>
                   <h5>
-                    Price ${data[i].price} BDT (per pice)
+                    Contract: ${data[i].phone}
                   </h5>
                 </div>
                    <div class="btn-box">
                   <a href="#">
                   <!--  Order -->
-                  -
+                  Price ${data[i].price} BDT (per piece)
                   </a>
                 </div> 
               </div>
