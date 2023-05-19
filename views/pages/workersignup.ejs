@@ -200,18 +200,11 @@
         marker.on("drag", function (e) {
           var marker = e.target;
           var position = marker.getLatLng();
-          console.log(position)
           const lat = document.getElementById('lat')
           const lng = document.getElementById('lan')
           lat.value = position.lat
           lng.value = position.lng
         });
-        console.log(marker);
       })
-      console.log(map)
-
-
-
-
 
     </script>

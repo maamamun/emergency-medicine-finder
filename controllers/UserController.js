@@ -113,8 +113,6 @@ const UserController = {
     const workerData = await UserModels.workermailCatchM(uId);
     const allService = await UserModels.getaService()
     const allMedicine = await UserModels.getMedicine(uId)
-
-    console.log(allMedicine)
     res.render('pages/workerdesh', { uId, allService, workerData, allMedicine })
   },
 
@@ -133,7 +131,6 @@ const UserController = {
 
   getServiceData: async (req, res) => {
     const allService = await UserModels.getaService()
-    console.log(allService)
     res.render('pages/service', { allService })
   },
 
@@ -168,7 +165,6 @@ const UserController = {
         res.redirect('/workers')
       }
     } catch (e) {
-      console.log(e)
       res.send('Wrong')
     }
   },
@@ -432,12 +428,9 @@ const UserController = {
       nid2Filename = images.nid2[0].filename
 
       const hashPassword = await bcrypt.hash(pass, 10);
-      console.log("ok")
       const registerData = await UserModels.insertWorkerRegisterM(
-        firstName, lastName, gender, shopname, email,  phone, propicFilename, nid1Filename, nid2Filename, house, road, division, zila, upazila, lat, lng, hashPassword
+        firstName, lastName, gender, shopname, email, phone, propicFilename, nid1Filename, nid2Filename, house, road, division, zila, upazila, lat, lng, hashPassword
       );
-      console.log(registerData)
-      // return res.render('pages/workersignup', { workerauth: true });
       res.redirect('/workerlogin')
     } catch (err) {
 
@@ -450,16 +443,13 @@ const UserController = {
   getMedicineData: async (req, res) => {
     const { mid } = req.query
     const allRawMedicine = await UserModels.getRawMedicine(mid)
-    console.log(allRawMedicine)
     res.send(allRawMedicine)
   },
   getSearchMediData: async (req, res) => {
     const { mname } = req.query
-    console.log("name",mname)
     const allSearchMedicine = await UserModels.getSearchMedicine(mname)
-    
+
     res.send(allSearchMedicine)
-    console.log("send",allSearchMedicine)
   },
   insertBooking: async (req, res) => {
     try {

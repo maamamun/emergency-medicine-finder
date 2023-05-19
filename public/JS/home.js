@@ -1,7 +1,6 @@
 const x = document.getElementById("viwe");
 x.style.display = "none"
 const getdiv2 = document.getElementById("data")
-console.log("2", getdiv2)
 const markers = []
 let demo = []
 let curentlat = 0.00
@@ -10,11 +9,11 @@ let curentlng = 0.00
 let greenIcon = L.icon({
   iconUrl: 'images/map-marker.png',
   // shadowUrl: 'leaf-shadow.png',
-  iconSize:     [20, 75], // size of the icon
+  iconSize: [20, 75], // size of the icon
   // shadowSize:   [50, 64], // size of the shadow
-  iconAnchor:   [4, 94], // point of the icon which will correspond to marker's location
+  iconAnchor: [4, 94], // point of the icon which will correspond to marker's location
   // shadowAnchor: [4, 62],  // the same for the shadow
-  popupAnchor:  [4, -76] // point from which the popup should open relative to the iconAnchor
+  popupAnchor: [4, -76] // point from which the popup should open relative to the iconAnchor
 });
 
 function calculateDistance(lat1, lon1, lat2, lon2, unit) {
@@ -30,28 +29,23 @@ function calculateDistance(lat1, lon1, lat2, lon2, unit) {
   dist = dist * 60 * 1.1515
   if (unit == "K") { dist = dist * 1.609344 }
   if (unit == "N") { dist = dist * 0.8684 }
-  
+
   return dist
 }
 const map = L.map('shopmap', { doubleClickZoom: false }).locate({ setView: true, maxZoom: 30 });
 
 const searchInput = document.getElementById('searchmedi')
 searchInput.addEventListener('input', e => {
-  console.log(e.target.value)
   fetch(`/searchmedicine?mname=${e.target.value}`,
   ).then(
     res => res.json()
   ).then(data => {
-    console.log(data)
-    console.log("on funtion", curentlat)
-
     for (i = 0; i < data.length; i++) {
       data[i]["distance"] = calculateDistance(curentlat, curentlng, data[i]["lat"], data[i]["lng"]);
     }
 
     data.sort(function (a, b) {
-      const disData=a.distance - b.distance;
-      console.log("Disdata",disData,"km")
+      const disData = a.distance - b.distance;
       return a.distance - b.distance;
     });
     markers.forEach(m => map.removeLayer(m))
@@ -72,7 +66,6 @@ searchInput.addEventListener('input', e => {
 
     let newHtml = ''
     for (i = 0; i < data.length; i++) {
-      console.log(data.length)
       newHtml += ` 
                    
             <div class="col-sm-6 col-lg-4 mx-auto ">
@@ -113,9 +106,6 @@ searchInput.addEventListener('input', e => {
       x.style.display = "block";
     }
     getdiv2.innerHTML = newHtml
-
-    console.log('sorted data', newHtml)
-
     demo = data
   })
 
@@ -130,8 +120,6 @@ navigator.geolocation.getCurrentPosition(position => {
   const { coords: { latitude, longitude } } = position;
   curentlat = latitude;
   curentlng = longitude;
-  console.log("map data1", curentlat)
-
   //new
   var greenIcon = L.icon({
     iconUrl: 'images/map-marker.png',
@@ -153,9 +141,7 @@ navigator.geolocation.getCurrentPosition(position => {
   marker.on("drag", function (e) {
     var marker = e.target;
     var position = marker.getLatLng();
-    console.log(position)
   });
-  console.log(marker);
   var circle = L.circle([latitude, longitude], {
     color: '#8fce00',
     fillColor: '#d9ead3',
@@ -163,4 +149,3 @@ navigator.geolocation.getCurrentPosition(position => {
     radius: 300
   }).addTo(map);
 })
-console.log("map data", curentlat)

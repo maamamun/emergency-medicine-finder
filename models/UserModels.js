@@ -23,7 +23,6 @@ const UserModels = {
       try {
         const insertRegis = 'INSERT INTO `worker`( `first_name`, `last_name`, `gender`, `shopname`, `email`, `phone`, `propic`, `nid1`, `nid2`, `house`, `road`, `division`, `zila`, `upazila`,lat, lng, `pass`) VALUES (?,?http://localhost:3000/verify-worker-account/,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         const values = [firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila,lat,lng, pass];
-    console.log("Doom data", values)
         return await dbConnect.promise().execute(insertRegis, values);
       } catch (err) {
      
@@ -42,7 +41,6 @@ const UserModels = {
     const sql = 'INSERT INTO `shopmedicine`( `shop_email`, `mediname`, `meditype`, `medistrength`, `medigeneric`, `medicompany`, `stock`, `price`) VALUES(?,?,?,?,?,?,?,?)';
     const values = [shopemail, mediname, meditype, medistrength, medigeneric, medicompany, medistock, mediprice]
     const [rows] = await dbConnect.promise().execute(sql, values);
-    console.log('rows')
     return rows;
   },
 /* ====== Book a service Model ===== */
@@ -165,13 +163,11 @@ const UserModels = {
   },
 
   getRawMedicine: async (mid) => {
-    console.log(mid)
     const sql = `SELECT * from medicine WHERE id="${mid}"`;
     const [rows] = await dbConnect.promise().execute(sql);
     return rows[0];
   },
   getSearchMedicine: async (mname) => {
-    console.log(mname)
     if(!mname) return []
     const sql = `SELECT * from shopmedicine join worker on  shop_email=email WHERE mediname like "%${mname}%" `;
     const [rows] = await dbConnect.promise().execute(sql);

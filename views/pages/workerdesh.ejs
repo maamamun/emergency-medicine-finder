@@ -203,15 +203,12 @@
 
     <script>
         const mediid = document.getElementById("mediid")
-        console.log(mediid)
         mediid.addEventListener('change', e => {
-            console.log(e.target.value)
             fetch(
                 `/medicine?mid=${e.target.value}`,
             ).then(
                 res => res.json()
             ).then(data => {
-                console.log(data)
                 const mediname = document.getElementById("mediname")
                 const meditype = document.getElementById("meditype")
                 const medistrength = document.getElementById("medistrength")
