@@ -22,11 +22,11 @@ const UserModels = {
   /* ====== worker Register Model ===== */
   insertWorkerRegisterM: async (firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat, lng, pass) => {
     try {
-      const insertRegis = 'INSERT INTO `worker`( `first_name`, `last_name`, `gender`, `shopname`, `email`, `phone`, `propic`, `nid1`, `nid2`, `house`, `road`, `division`, `zila`, `upazila`,lat, lng, `pass`) VALUES (?,?http://localhost:3000/verify-worker-account/,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+      const insertRegis = 'INSERT INTO `worker`( `first_name`, `last_name`, `gender`, `shopname`, `email`, `phone`, `propic`, `nid1`, `nid2`, `house`, `road`, `division`, `zila`, `upazila`,lat, lng, `pass`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
       const values = [firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat, lng, pass];
       return await dbConnect.promise().execute(insertRegis, values);
     } catch (err) {
-
+console.log(err)
       return err;
     }
   },
@@ -121,13 +121,13 @@ const UserModels = {
   },
 
   workeracUpdateStatus: async (userId) => {
-    const sql = `UPDATE worker SET status = 1 WHERE w_id  = ${userId}`
+    const sql = `UPDATE worker SET status = 1 WHERE email  = '${userId}'`
     const [row] = await dbConnect.promise().execute(sql)
     return row
   },
 
   workerHoaldUpdateStatus: async (userId) => {
-    const sql = `UPDATE worker SET status = 2 WHERE w_id  = ${userId}`
+    const sql = `UPDATE worker SET status = 2 WHERE email  = '${userId}'`
     const [row] = await dbConnect.promise().execute(sql)
     return row
   },

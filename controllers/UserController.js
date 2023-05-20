@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'mamun872381cpi@gmail.com',
-    pass: 'rftopxkjdkfjhfpc',
+    user: 'emflocal0@gmail.com',
+    pass: 'nqzctdkxgmxiwbty',
   },
 });
 //
@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport({
 async function sendMail(toMail, subject, textMessage, htmlMessage) {
   // send mail with defined transport object
   const results = await transporter.sendMail({
-    from: 'EMF Service 🔓📨 <mamun872381cpi@gmail.com>',
+    from: 'EMF Service 🔓📨 <emflocal0@gmail.com>',
     to: toMail,
     subject,
     text: textMessage,
@@ -357,7 +357,7 @@ const UserController = {
       );
 
 
-      const toMail = "mamun872381cpi@gmail.com"
+      const toMail = "emflocal0@gmail.com"
       const subject = 'EMF Service active account';
       const textMessage = 'EMF Service account verify'
       const link = `${process.env.BASE_UR}`
@@ -452,14 +452,14 @@ const UserController = {
         );
 
 
-        const toMail = "mamun872381cpi@gmail.com"
+        const toMail = "emflocal0@gmail.com"
         const subject = 'EMF Service active account';
         const textMessage = 'EMF Service account verify'
         const link = `${process.env.BASE_UR}`
         const activeBtn = `
         <div style="padding: 0px 20px;margin-left: 8px;text-align: center;">
         <h4>Wellcome  ${firstName} ${lastName}.<h4>
-        <p>If you are sinup for EMF Service.<p> <br>
+        <p>If you are update your profile for EMF Service.<p> <br>
         <p>Please EMF Service account verify. Othewise ignore the mail. <p>
         </div>
         <div>
@@ -482,7 +482,7 @@ const UserController = {
         res.redirect('/profile')
     } catch (err) {
       console.log("doom err",err)
-      return res.render('pages/userupdate', { registerFail: true });
+      return res.render('pages/userupdate');
     }
   },
 
@@ -515,9 +515,17 @@ const UserController = {
 
   workerAccountVerify: async (req, res) => {
     const userId = req.params.id
-
     const isUpdate = await UserModels.workeracUpdateStatus(userId)
     if (isUpdate.affectedRows) {
+      const subject = 'EMF account Activation';
+      const textMessage = 'EMF Service account verify'
+      const activeMassage = `
+      <div style="padding: 0px 20px;margin-left: 8px;text-align: center;">
+      <h4>Wellcom to our service.<h4>
+      <p>We have activated your account.</p>
+      <p>Thank you very much for staying with our service. </p>
+      </div>`
+      sendMail(userId, subject, textMessage, activeMassage)
       res.redirect('/worker')
     }
   },
@@ -527,6 +535,16 @@ const UserController = {
 
     const isUpdate = await UserModels.workerHoaldUpdateStatus(userId)
     if (isUpdate.affectedRows) {
+      const subject = 'EMF account block';
+      const textMessage = 'EMF Service account verify'
+      const activeMassage = `
+      <div style="padding: 0px 20px;margin-left: 8px;text-align: center;">
+      <h4>Wellcom to our service.<h4>
+      <p>We are hold your account.</p>
+      <p>Contrac with us for your acctivation. </p>
+      </div>`
+      sendMail(userId, subject, textMessage, activeMassage)
+
       res.redirect('/worker')
     }
   },

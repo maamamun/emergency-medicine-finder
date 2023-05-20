@@ -34,9 +34,7 @@ router.get(
 
 
 router.get(
-  '/profile',
-  decorateHtmlResponse('Profile'),
-  UserController.profile,
+  '/profile', UserController.profile,
 );
 router.get(
   '/signup',
@@ -47,8 +45,6 @@ router.get(
 
 router.get(
   '/userupdate',
-  decorateHtmlResponse('SignUp'),
-  checkCurrentLogin,
   UserController.userUpadateC,
 );
 
@@ -80,10 +76,7 @@ router.post(
 );
 
 router.post(
-  '/userupdate', upload.fields([{ name: 'propic' }]),
-  decorateHtmlResponse('Upadte'),
-  singupValidator,
-  UserController.insertUserUpadateC,
+  '/userupdate', upload.fields([{ name: 'propic' }]), UserController.insertUserUpadateC,
 );
 
 router.post(
