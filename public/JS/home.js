@@ -62,7 +62,7 @@ searchInput.addEventListener('input', e => {
       }
       markers.push(marker)
     }
-
+    console.log(data)
 
     let newHtml = ''
     for (i = 0; i < data.length; i++) {
@@ -74,6 +74,10 @@ searchInput.addEventListener('input', e => {
                   <img src="images/s1.png" alt="">
                 </div>
                 <div class="detail-box">
+                ${data[i].email}
+
+                ${data[i].id}
+
                   <h5>
                     ${data[i].shopname}
                   </h5>
@@ -85,16 +89,23 @@ searchInput.addEventListener('input', e => {
                   </p>
                   <p>
                     ${data[i].medigeneric} 
+                  </p>  
+                  <p>                   
+                  Contract: ${data[i].phone}
                   </p>
                   <h5>
-                    Contract: ${data[i].phone}
+                    Price ${data[i].price} BDT (per piece)
                   </h5>
                 </div>
+                
                    <div class="btn-box">
-                  <a href="#">
-                  <!--  Order -->
-                  Price ${data[i].price} BDT (per piece)
-                  </a>
+                  <form action="/book-service" method="post">                   
+                   <input type="hidden" name="service_id" value="${data[i].id}">
+                   <button type="submit">
+                   Send Request
+                    </button>
+                  </form>
+
                 </div> 
               </div>
             </div>
@@ -108,8 +119,9 @@ searchInput.addEventListener('input', e => {
     getdiv2.innerHTML = newHtml
     demo = data
   })
-
 })
+
+
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,

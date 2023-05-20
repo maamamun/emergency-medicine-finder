@@ -26,7 +26,7 @@ router.get('/user', UserController.getUser)
 router.get('/worker', UserController.getWorker)
 router.get('/workers', UserController.getWorkerDesh)
 router.get('/service', UserController.getServiceData)
-router.get('/login',decorateHtmlResponse('Home'), redirectLoggedIn,UserController.newlogin,);
+router.get('/login', decorateHtmlResponse('Home'), redirectLoggedIn, UserController.newlogin,);
 
 router.get(
   '/workerlogin', UserController.workerlogin,
@@ -49,6 +49,11 @@ router.get(
 );
 
 router.get(
+  '/request',
+  UserController.mediReqC,
+);
+
+router.get(
   '/workersignup',
   decorateHtmlResponse('SignUp'),
   UserController.workerRegisterC,
@@ -67,7 +72,7 @@ router.post('/alogin', UserController.adminLoginData)
 router.post('/add-medi', UserController.mediData)
 router.post('/add-medicine', UserController.medicineData)
 router.post('/login', decorateHtmlResponse('Login'), UserController.loginC)
-router.post('/workerlogin',  UserController.workerloginC)
+router.post('/workerlogin', UserController.workerloginC)
 router.post(
   '/signup', upload.fields([{ name: 'propic' }]),
   decorateHtmlResponse('SignUp'),
@@ -81,18 +86,20 @@ router.post(
 
 router.post(
   '/workersignup', upload.fields([{ name: 'propic' },
-   { name: 'nid1' }, 
-   { name: 'nid2' }]),
+  { name: 'nid1' },
+  { name: 'nid2' }]),
   UserController.insertWorkerRegisterC,
 );
 
- router.get(
+router.get(
   '/medicine',
   UserController.getMedicineData
- )
+)
 
- router.get(
-  '/searchmedicine',UserController.getSearchMediData
- )
+router.get(
+  '/searchmedicine', UserController.getSearchMediData
+)
+
+router.post('/book-service', UserController.bookData)
 
 module.exports = router;

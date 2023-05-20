@@ -276,6 +276,17 @@ const UserController = {
     console.log(user)
     res.render('pages/edituser', { uId, user });
   },
+  mediReqC: async (req, res) => {
+    const uId = localStorage.getItem("userMail");
+    const reqId = localStorage.getItem("requId");
+    console.log("ID",reqId)
+    const user = await UserModels.getUser(uId)
+    const mediData = await UserModels.getRequestMedicine(reqId)
+    
+    console.log("user",user)
+    console.log("MediData",mediData)
+    res.render('pages/request', { uId, user,reqId,mediData });
+  },
 
   /* ====== New login Controller  ====== */
 
@@ -424,8 +435,21 @@ const UserController = {
 
     res.send(allSearchMedicine)
   },
+  
 
 
+
+  bookData: async (req, res) => {
+    try {
+      const {
+        service_id
+      } = req.body;
+      localStorage.setItem(`requId`, `${service_id}`);
+      res.redirect('/request')
+    } catch (e) {
+      res.send('Somthing Wrong')
+    }
+  },
 
   /* ====== user update controller ====== */
   insertUserUpadateC: async (req, res) => {
