@@ -16,7 +16,16 @@ const UserModels = {
       return err;
     }
   },
-
+  insertMediReqM: async (userId, userMail, mediId, mediName, shopMail, quantity, ppic) => {
+    try {
+      const sql = 'INSERT INTO `medicine_request`(`user_id`, `user_email`, `medi_id`, `medi_name`, `shop_email`, `quantity`, `ppic`) VALUES (?,?,?,?,?,?,?)';
+      const values = [userId, userMail, mediId, mediName, shopMail, quantity, ppic];
+      return await dbConnect.promise().execute(sql, values);
+    } catch (err) {
+      console.log(err)
+      return err;
+    }
+  },
   /* ====== worker Register Model ===== */
   insertWorkerRegisterM: async (firstName, lastName, gender, shopname, email, phone, propic, nid1, nid2, house, road, division, zila, upazila, lat, lng, pass) => {
     try {
@@ -84,33 +93,21 @@ const UserModels = {
     return rows;
   },
 
-  getUserBooking: async (mail) => {
-    const sql = `SELECT * ,DATE_FORMAT(ser_date,'%d/%c/%Y')as fdate FROM servicebooking WHERE user_email= ?`;
-    const value = [mail];
-    const [rows] = await dbConnect.promise().execute(sql, value);
-    return rows;
-  },
-
-  getallBooking: async () => {
-    const sql = `SELECT * ,DATE_FORMAT(ser_date,'%d/%c/%Y')as fdate FROM servicebooking`;
-    const [rows] = await dbConnect.promise().execute(sql);
-    return rows;
-  },
-
+  
   mailCatchM: async (mail) => {
     const getMail = 'SELECT * FROM users WHERE email= ?';
     const value = [mail];
     const [row] = await dbConnect.promise().execute(getMail, value);
     return row;
   },
-
+  
   workermailCatchM: async (mail) => {
     const getMail = 'SELECT * FROM worker WHERE email= ?';
     const value = [mail];
     const [row] = await dbConnect.promise().execute(getMail, value);
     return row;
   },
-
+  
   /* ====== Update DB ===== */
   updateStatus: async (userId) => {
     const sql = `UPDATE users SET status = 1 WHERE u_id  = ${userId}`
@@ -129,30 +126,44 @@ const UserModels = {
     const [row] = await dbConnect.promise().execute(sql)
     return row
   },
-
+  requestUpdateStatus: async (reqid) => {
+    const sql = `UPDATE medicine_request  SET status = 1 WHERE req_id= '${reqid}'`
+    const [row] = await dbConnect.promise().execute(sql)
+    return row
+  },
+  requestHoaldUpdateStatus: async (reqid) => {
+    const sql = `UPDATE medicine_request  SET status = 2 WHERE req_id= '${reqid}'`
+    const [row] = await dbConnect.promise().execute(sql)
+    return row
+  },
+  
+  requestDeleteStatus: async (reqid) => {
+    const sql = `DELETE FROM medicine_request WHERE req_id= '${reqid}'`
+    const [row] = await dbConnect.promise().execute(sql)
+    return row
+  },
+  
   /* ====== user upadate Model ===== */
   UserUpadateM: async (firstName, lastName, gender, email, phone, propic, house, road, division, zila, upazila, pass, userId) => {
     try {
       const sql = `update users set first_name='${firstName}', last_name='${lastName}', gender='${gender}', email='${email}', phone='${phone}', propic='${propic}', house='${house}', road='${road}', division='${division}', zila='${zila}', upazila='${upazila}', pass='${pass}' WHERE u_id  = ${userId}`;
       const [row] = await dbConnect.promise().execute(sql)
       return row;
-
+      
     } catch (err) {
       console.log(err)
       return err;
     }
   },
-
-
+  
+  
   /* ====== Get Data from DB ===== */
-
-
-  getAdmin: async (userid) => {
+    getAdmin: async (userid) => {
     const sql = `SELECT * FROM admin WHERE admin_uid="${userid}"`;
     const [rows] = await dbConnect.promise().execute(sql);
     return rows;
   },
-
+  
   getRawMedicine: async (mid) => {
     const sql = `SELECT * from medicine WHERE id="${mid}"`;
     const [rows] = await dbConnect.promise().execute(sql);
@@ -165,11 +176,23 @@ const UserModels = {
     return rows;
   },
   getRequestMedicine: async (mid) => {
-     const sql = `SELECT * from shopmedicine WHERE id="${mid}"`;
+    const sql = `SELECT * from shopmedicine WHERE id="${mid}"`;
     const [rows] = await dbConnect.promise().execute(sql);
     return rows;
-  }
-
+  },
+  getMedicineUserReq: async (mail) => {
+    const sql = `SELECT medicine_request.req_id,medicine_request.shop_email,medicine_request.medi_name,medicine_request.quantity,medicine_request.ppic,medicine_request.status,worker.shopname,worker.phone FROM medicine_request join worker on medicine_request.shop_email=worker.email WHERE user_email= ?`;
+    const value = [mail];
+    const [rows] = await dbConnect.promise().execute(sql,value);
+    return rows;
+  },
+  
+  getMedicineReq: async (mail) => {
+    const sql = `SELECT medicine_request.req_id,medicine_request.medi_name,medicine_request.user_email,users.first_name,users.last_name,medicine_request.quantity,medicine_request.ppic,medicine_request.status,users.phone FROM medicine_request join users on medicine_request.user_email=users.email WHERE shop_email= ?`;
+    const value = [mail];
+    const [rows] = await dbConnect.promise().execute(sql,value);
+    return rows;
+  },
 };
 
 module.exports = UserModels;

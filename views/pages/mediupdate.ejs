@@ -154,55 +154,7 @@
                     </form>
                 </div>
             </div>
-            <div class="recent--worker">
-                <div class="title">
-                    <h2 class="section--title">Medicine List</h2>
-                </div>
-                <div class="table">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Strength</th>
-                                <th>Geenric Name</th>
-                                <th>Company</th>
-                                <th>Stock</th>
-                                <th>Price per unit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% allMedicine.map(service=>{ %>
-                                <tr>
-                                    <th scope="row">
-                                        <%= service.mediname%>
-                                    </th>
-                                    <td>
-                                        <%= service.meditype%>
-                                    </td>
-                                    <td>
-                                        <%= service.medistrength%>
-                                    </td>
-                                    <td>
-                                        <%= service.medigeneric%>
-                                    </td>
-                                    <td>
-                                        <%= service.medicompany%>
-                                    </td>
-                                    <td>
-                                        <%= service.stock%> Piece(s)
-                                    </td>
-                                    <td>
-                                        <%= service.price%> tk
-                                    </td>
-                                </tr>
-                                <% }) %>
-
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+           
         </div>
     </section>
 

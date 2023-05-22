@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'emflocal0@gmail.com',
-    pass: 'nqzctdkxgmxiwbty',
+    user: '', //user email athentication address@email.com
+    pass: '', //user email athentication pass
   },
 });
 //
@@ -64,10 +64,9 @@ const UserController = {
     const allUser = await UserModels.getallUser()
     const allService = await UserModels.getaService()
     const allWorker = await UserModels.getallWorker()
-    const allBooking = await UserModels.getallBooking()
     const adminData = localStorage.getItem("adminData");
 
-    res.render('pages/admin', { allUser, allService, allWorker, allBooking, adminData })
+    res.render('pages/admin', { allUser, allService, allWorker, adminData })
   },
   getBooked: async (req, res) => {
     const uId = localStorage.getItem("userMail");
@@ -83,8 +82,17 @@ const UserController = {
 
   getWorker: async (req, res) => {
     const allWorker = await UserModels.getallWorker()
-
     res.render('pages/worker', { allWorker })
+  },
+
+  getMediReqData: async (req, res) => {
+
+    const uId = localStorage.getItem("workerData");
+    const workerData = await UserModels.workermailCatchM(uId);
+    const allMedicine = await UserModels.getMedicineReq(uId)
+
+    res.render('pages/servicereq', { uId, workerData, allMedicine })
+
   },
 
   getWorkerDesh: async (req, res) => {
@@ -273,19 +281,23 @@ const UserController = {
   userUpadateC: async (req, res) => {
     const uId = localStorage.getItem("userMail");
     const user = await UserModels.getUser(uId)
-    console.log(user)
     res.render('pages/edituser', { uId, user });
+  },
+
+  mediUpadateC: async (req, res) => {
+     const wId = localStorage.getItem("workerData");
+    const workerData = await UserModels.workermailCatchM(wId);  
+    const allMedicine = await UserModels.getMedicine(wId)
+    const allService = await UserModels.getaService() 
+    res.render('pages/mediupdate', { wId, workerData,allMedicine, allService });
   },
   mediReqC: async (req, res) => {
     const uId = localStorage.getItem("userMail");
     const reqId = localStorage.getItem("requId");
-    console.log("ID",reqId)
     const user = await UserModels.getUser(uId)
     const mediData = await UserModels.getRequestMedicine(reqId)
-    
-    console.log("user",user)
-    console.log("MediData",mediData)
-    res.render('pages/request', { uId, user,reqId,mediData });
+
+    res.render('pages/request', { uId, user, reqId, mediData });
   },
 
   /* ====== New login Controller  ====== */
@@ -343,6 +355,13 @@ const UserController = {
     const userData = await UserModels.getUser(uId)
 
     res.render('pages/userprofile', { uId, userData });
+  },
+
+  userRequestData: async (req, res) => {
+    const uId = localStorage.getItem("userMail");
+    const userData = await UserModels.getUser(uId)
+    const mediData = await UserModels.getMedicineUserReq(uId)
+    res.render('pages/userreqest', { uId, userData,mediData });
   },
 
   /* ====== Register controller ====== */
@@ -421,6 +440,21 @@ const UserController = {
       return res.render('pages/workersignup', { registerFail: true });
     }
   },
+  insertMediReqC: async (req, res) => {
+    try {
+      const { userId, userMail, mediId, mediName, shopMail, quantity, ppic }
+        = req.body;
+      const images = req.files;
+      ppicFilename = images.ppic[0].filename
+
+      const registerData = await UserModels.insertMediReqM(
+        userId, userMail, mediId, mediName, shopMail, quantity, ppicFilename
+      );
+      res.redirect('/req')
+    } catch (err) {
+      return res.render('pages/request');
+    }
+  },
 
   /* ======Worker Register controller ====== */
 
@@ -435,7 +469,7 @@ const UserController = {
 
     res.send(allSearchMedicine)
   },
-  
+
 
 
 
@@ -453,34 +487,32 @@ const UserController = {
 
   /* ====== user update controller ====== */
   insertUserUpadateC: async (req, res) => {
-    const { userId,firstName, lastName, gender, email, phone, propic, house, road, division, zila, upazila, pass } = req.body;
+    const { userId, firstName, lastName, gender, email, phone, propic, house, road, division, zila, upazila, pass } = req.body;
     const errors = validationResult(req).formatWith((error) => error.msg);
     const uId = localStorage.getItem("userMail");
     const user = await UserModels.getUser(uId)
     const images = req.files;
-    propicFilename = images.propic[0].filename  
+    propicFilename = images.propic[0].filename
 
     if (!errors.isEmpty()) {
       res.render('pages/userupdate', { uId, user });
       return res.render('pages/userupdate', {
         error: errors.mapped(),
-        value: { userId,firstName, lastName, gender, email, phone, propicFilename, house, road, division, zila, upazila, pass },
+        value: { userId, firstName, lastName, gender, email, phone, propicFilename, house, road, division, zila, upazila, pass },
       });
-    } 
+    }
     try {
-      console.log("domdata", req.body)
-
-        const hashPassword = await bcrypt.hash(pass, 10);
-        const registerData = await UserModels.UserUpadateM(
-          firstName, lastName, gender, email, phone, propicFilename, house, road, division, zila, upazila, hashPassword,userId
-        );
+      const hashPassword = await bcrypt.hash(pass, 10);
+      const registerData = await UserModels.UserUpadateM(
+        firstName, lastName, gender, email, phone, propicFilename, house, road, division, zila, upazila, hashPassword, userId
+      );
 
 
-        const toMail = "emflocal0@gmail.com"
-        const subject = 'EMF Service active account';
-        const textMessage = 'EMF Service account verify'
-        const link = `${process.env.BASE_UR}`
-        const activeBtn = `
+      const toMail = "emflocal0@gmail.com"
+      const subject = 'EMF Service active account';
+      const textMessage = 'EMF Service account verify'
+      const link = `${process.env.BASE_UR}`
+      const activeBtn = `
         <div style="padding: 0px 20px;margin-left: 8px;text-align: center;">
         <h4>Wellcome  ${firstName} ${lastName}.<h4>
         <p>If you are update your profile for EMF Service.<p> <br>
@@ -502,10 +534,10 @@ const UserController = {
         Active account</button></a>
         </div>
         `
-        sendMail(email, subject, textMessage, activeBtn)
-        res.redirect('/profile')
+      sendMail(email, subject, textMessage, activeBtn)
+      res.redirect('/profile')
     } catch (err) {
-      console.log("doom err",err)
+      console.log("doom err", err)
       return res.render('pages/userupdate');
     }
   },
@@ -570,6 +602,30 @@ const UserController = {
       sendMail(userId, subject, textMessage, activeMassage)
 
       res.redirect('/worker')
+    }
+  },
+  medicineReqVerify: async (req, res) => {
+    const reqId = req.params.id
+    const isUpdate = await UserModels.requestUpdateStatus(reqId)
+    if (isUpdate.affectedRows) {
+      res.redirect('/servicereq')
+    }
+  },
+
+  medicineReqHold: async (req, res) => {
+    const reqId = req.params.id
+
+    const isUpdate = await UserModels.requestHoaldUpdateStatus(reqId)
+    if (isUpdate.affectedRows) {
+      res.redirect('/servicereq')
+    }
+  },
+  medicineReqDelete: async (req, res) => {
+    const reqId = req.params.id
+
+    const isUpdate = await UserModels.requestDeleteStatus(reqId)
+    if (isUpdate.affectedRows) {
+      res.redirect('/req')
     }
   },
 

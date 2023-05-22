@@ -62,7 +62,6 @@ searchInput.addEventListener('input', e => {
       }
       markers.push(marker)
     }
-    console.log(data)
 
     let newHtml = ''
     for (i = 0; i < data.length; i++) {
@@ -74,9 +73,12 @@ searchInput.addEventListener('input', e => {
                   <img src="images/s1.png" alt="">
                 </div>
                 <div class="detail-box">
+                <p hidden>
+               
                 ${data[i].email}
 
                 ${data[i].id}
+                </p>
 
                   <h5>
                     ${data[i].shopname}

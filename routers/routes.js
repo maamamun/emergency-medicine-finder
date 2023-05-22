@@ -24,6 +24,7 @@ router.get('/admin', UserController.getAdmin)
 router.get('/booked', UserController.getBooked)
 router.get('/user', UserController.getUser)
 router.get('/worker', UserController.getWorker)
+router.get('/servicereq', UserController.getMediReqData)
 router.get('/workers', UserController.getWorkerDesh)
 router.get('/service', UserController.getServiceData)
 router.get('/login', decorateHtmlResponse('Home'), redirectLoggedIn, UserController.newlogin,);
@@ -37,6 +38,10 @@ router.get(
   '/profile', UserController.profile,
 );
 router.get(
+  '/req', UserController.userRequestData,
+);
+
+router.get(
   '/signup',
   decorateHtmlResponse('SignUp'),
   checkCurrentLogin,
@@ -46,6 +51,11 @@ router.get(
 router.get(
   '/userupdate',
   UserController.userUpadateC,
+);
+
+router.get(
+  '/mediupdate',
+  UserController.mediUpadateC,
 );
 
 router.get(
@@ -66,6 +76,10 @@ router.get('/adminlogout', UserController.adminLogout);
 router.get('/verify-account/:id', UserController.accountVerify)
 router.get('/verify-worker-account/:id', UserController.workerAccountVerify)
 router.get('/hold-worker-account/:id', UserController.workerAccountHold)
+
+router.get('/verify-medicine-request/:id', UserController.medicineReqVerify)
+router.get('/hold-medicine-request/:id', UserController.medicineReqHold)
+router.get('/delete-medicine-request/:id', UserController.medicineReqDelete)
 
 /* ======= Post routes ======== */
 router.post('/alogin', UserController.adminLoginData)
@@ -90,7 +104,9 @@ router.post(
   { name: 'nid2' }]),
   UserController.insertWorkerRegisterC,
 );
-
+router.post(
+  '/request', upload.fields([{ name: 'ppic' }]),  UserController.insertMediReqC,
+);
 router.get(
   '/medicine',
   UserController.getMedicineData

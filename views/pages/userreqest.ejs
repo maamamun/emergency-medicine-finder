@@ -1,0 +1,64 @@
+<%- include ('../template/header') %>
+  <%- include ('../template/nav') -%>
+    <!-- about section -->
+
+    <section class="about_section layout_padding">
+      <div class="container  ">
+        <div>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Medicine Name</th>
+                <th>Shop Name</th>
+                <th>Shopkeeper Mobile No</th>
+                <th>Quantity</th>
+                <th>Prescription Picture</th>
+                <th>Status</th>
+                <th>Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <% mediData.map(worker=>{ %>
+                <tr>
+
+                  <td>
+                    <%=worker.medi_name%>
+                  </td>
+                  <td>
+                    <%=worker.shopname%>
+                  </td>
+                  <td>
+                    <%=worker.phone%>
+                  </td>
+                  <td>
+                    <%=worker.quantity%>
+                  </td>
+
+                  <td>
+                    <img src="uploads/<%=worker.ppic%>" alt="Profile" style="height: 100px; width: 150px;">
+                  </td>
+
+                  <%if(worker.status==0){%>
+                    <td class="pending" style="color: brown;">Pending</td>
+
+                    <% }else if(worker.status==1){ %>
+                      <td class="confirmed" style="color: green;">Accept</td>
+                      <% }else{ %>
+                        <td class="pending" style="color:blanchedalmond;">Hold</td>
+                        <% } %>
+                          <td><a class="btn btn-primary"
+                              href="http://localhost:3802/delete-medicine-request/<%=worker.req_id%>">DELETE</a>
+                          </td>
+                </tr>
+
+                <% }) %>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- end about section -->
+    <%- include("../template/footer"); -%>
