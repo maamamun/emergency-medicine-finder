@@ -27,13 +27,28 @@
                       <li class="nav-item">
                         <a class="nav-link" href="/about">About</a>
                       </li>
-                      <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/login" value="user" id="user">User Login</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/workerlogin" value="worker" id="worker">Shopkeeper
-                          Login</a>
-                      </li>
+
+                      <% if(uId) { %>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/profile">
+                            <%= user[0].first_name %>
+                              <%= user[0].last_name %>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                        <% } else{ %>
+                          <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/login" value="user" id="user">User
+                              Login</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/workerlogin" value="worker"
+                              id="worker">Shopkeeper Login</a>
+                          </li>
+                          <% } %>
+                            
                     </ul>
                   </div>
                 </nav>
@@ -55,16 +70,21 @@
             <div class="form_container">
               <div class="heading_container heading_center">
                 <h2 class="contact_heading">
-                  User <span>Register</span> Form
+                  User <span>Update</span> Form
                 </h2>
               </div>
-              <form action="/signup" method="post" enctype="multipart/form-data">
+              <form action="/userupdate" method="post" enctype="multipart/form-data">
                 <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="firstName" placeholder="First Name" />
+                  <div class="form-group col-md-6" hidden>
+                    <input type="text" class="form-control" name="userId" value="<%= user[0].u_id %>" />
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="lastName" placeholder="Last Name" />
+                    <input type="text" class="form-control" name="firstName" placeholder="First Name"
+                      value="<%= user[0].first_name %>" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="lastName" placeholder="Last Name"
+                      value="<%= user[0].last_name %>" />
                   </div>
                 </div>
 
@@ -73,9 +93,11 @@
                     <label for="gender">Gender</label>
 
                     <select class="form-select" name="gender" id="gender" aria-label="Default select example">
-                      <option selected>Select Gender:</option>
+                      <option selected value="<%= user[0].gender %>">
+                        <%= user[0].gender %>
+                      </option>
                       <option value="Male">Male</option>
-                      <option value="Female">Feale</option>
+                      <option value="Female">Female</option>
                       <option value="Other">Other</option>
                     </select>
                   </div>
@@ -87,10 +109,12 @@
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <input type="email" class="form-control" name="email" placeholder="Email Address" />
+                    <input type="email" class="form-control" name="email" placeholder="Email Address"
+                      value="<%= user[0].email %>" />
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="phone" placeholder="Mobile Number" />
+                    <input type="text" class="form-control" name="phone" placeholder="Mobile Number"
+                      value="<%= user[0].phone %>" />
                   </div>
                 </div>
 
@@ -99,31 +123,38 @@
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" placeholder="House" name="house" />
+                    <input type="text" class="form-control" placeholder="House" name="house"
+                      value="<%= user[0].house %>" />
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" placeholder="Road" name="road" />
+                    <input type="text" class="form-control" placeholder="Road" name="road"
+                      value="<%= user[0].road %>" />
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <select class="form-select divisions" name="division" id="division"
                       aria-label="Default select example">
-                      <option selected>Select Division:</option>
+                      <option selected value="<%= user[0].division %>">
+                        <%= user[0].division %>
+                      </option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-6">
                     <select class="form-select districts" name="zila" id="districts"
                       aria-label="Default select example">
-                      <option selected>Select Zila:</option>
+                      <option selected value="<%= user[0].zila %>">
+                        <%= user[0].zila %>
+                      </option>
                     </select>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" placeholder="Upazila/Thana" name="upazila" />
+                    <input type="text" class="form-control" placeholder="Upazila/Thana" name="upazila"
+                      value="<%= user[0].upazila %>" />
                   </div>
                   <div class="form-group col-md-6">
                     <input type="password" class="form-control" placeholder="Password" name="pass" />

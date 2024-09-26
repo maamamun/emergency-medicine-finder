@@ -1,0 +1,162 @@
+<%- include ('../template/aheader') %>
+
+    <section class="main">
+        <div class="sidebar">
+            <ul class="sidebar--items">
+                <li>
+                    <a href="/admin">
+                        <span class="icon icon-1"><i class="ri-layout-grid-line"></i></span>
+                        <span class="sidebar--item">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/service" id="active--link">
+                        <span class="icon icon-2"><i class="ri-git-repository-line"></i></span>
+                        <span class="sidebar--item">Medicine</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/user">
+                        <span class="icon icon-4"><i class="ri-user-line"></i></span>
+                        <span class="sidebar--item">User</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/worker">
+                        <span class="icon icon-7"><i class="ri-user-2-line"></i></span>
+                        <span class="sidebar--item" style="white-space: nowrap;">Shopkeeper</span>
+                    </a>
+                </li>
+                
+            </ul>
+            <ul class="sidebar--bottom-items">
+
+                <li>
+                    <a href="/adminlogout">
+                        <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
+                        <span class="sidebar--item">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main--content">
+            <div class="service">
+                <div class="title">
+                    <h2 class="section--title">Add Medicine</h2>
+                </div>
+                <div class="container">
+                    <form action="/add-medi" method="post">
+                        <div class="mb-3 col-12">
+                            <div class="md-3 row">
+                                <div class="md-3 col">
+                                    <label for="mediname" class="col-form-label">Medicine Name</label>
+                                    <div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Enter Medicine Title"
+                                                name="mediname">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md-3 col">
+                                    <label for="type" class="col-form-label">Type of Medicine</label>
+                                    <div>
+                                        <select class="form-select" id="type" aria-label="Default select example" name="meditype">
+                                            <option selected>Select Medicine Type:</option>
+                                            <option value="Tablet">Tablet</option>
+                                            <option value="Capsule">Capsule</option>
+                                            <option value="Suppositorie">Suppositorie</option>
+                                            <option value="Drop">Drop</option>
+                                            <option value="Inhaler">Inhaler</option>
+                                            <option value="Injection">Injection</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <div class="md-3 row">
+                                <div class="md-3 col">
+                                    <label for="medistrength" class="col-form-label">Strength</label>
+                                    <div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="100mg"
+                                                name="medistrength">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md-3 col">
+                                    <label for="quantity" class="col-form-label">Generic Name</label>
+                                    <div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Enter Generic Name"
+                                                name="medigeneric">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="price" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Company Name" name="medicompany">
+                        </div>                        
+                        <!-- button -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="recent--worker">
+                <div class="title">
+                    <h2 class="section--title">Medicine List</h2>
+                </div>
+                <div class="table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Strength</th>
+                                <th>Geenric Name</th>
+                                <th>Company</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% allService.map(service=>{ %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= service.name%>
+                                    </th>
+                                    <td>
+                                        <%= service.type%>
+                                    </td>
+                                    <td>
+                                        <%= service.strength%>
+                                    </td>
+                                    <td>
+                                        <%= service.generic%>
+                                    </td>
+                                    <td>
+                                        <%= service.company%>
+                                    </td>
+                                    
+
+                                </tr>
+                                <% }) %>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/service.js"></script>
+
+    <script>
+         
+    </script>
